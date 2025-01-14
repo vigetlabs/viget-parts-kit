@@ -1,0 +1,11 @@
+{
+  "package": {
+    "name": "viget/viget-parts-kit",
+    "version": "1.0.0",
+    "source": {
+      "url": "/root/path/not/relative/path/to/viget-parts-kit/.git",
+      "type": "git",
+      "reference": "main"
+    }
+  }
+}

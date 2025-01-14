@@ -1,0 +1,31 @@
+{
+  "name": "viget/viget-parts-kit",
+  "description": "Component Parts Kit integration for WordPress made by Viget.",
+  "keywords": [
+    "wordpress",
+    "components",
+    "index",
+    "gutenberg",
+    "blocks",
+    "editor",
+    "directory"
+  ],
+  "type": "wordpress-plugin",
+  "homepage": "https://github.com/vigetlabs/viget-parts-kit",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Viget",
+      "homepage": "https://viget.com/"
+    }
+  ],
+  "require": {
+    "composer/installers": "~1.0"
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "composer/installers": true
+    }
+  }
+}
