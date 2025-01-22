@@ -3,7 +3,7 @@
  * Plugin Name:       Viget Parts Kit
  * Plugin URI:        https://viget.com
  * Description:       Component Parts Kit integration for WordPress made by Viget.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 5.7
  * Requires PHP:      8.1
  * Author:            Viget
@@ -17,7 +17,7 @@
  */
 
 // Plugin version.
-const VPK_VERSION = '1.0.0';
+const VPK_VERSION = '1.0.1';
 
 // Plugin file.
 const VPK_PLUGIN_FILE = __FILE__;
