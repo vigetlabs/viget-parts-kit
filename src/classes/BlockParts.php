@@ -7,7 +7,7 @@
 
 namespace VigetPartsKit;
 
-use Viget\ACFBlocksToolkit\Block_Registration;
+use Viget\VigetBlocksToolkit\Block_Registration;
 
 /**
  * CoreParts Class
@@ -36,8 +36,8 @@ class BlockParts {
 	 */
 	private function register_blocks(): void {
 		add_filter(
-			'viget_parts_kit',
-			function( array $parts ): array {
+			'vgtpk_parts_kit',
+			function ( array $parts ): array {
 				if ( empty( $this->blocks ) ) {
 					$this->blocks = \WP_Block_Type_Registry::get_instance()->get_all_registered();
 				}

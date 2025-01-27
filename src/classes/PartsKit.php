@@ -14,11 +14,14 @@ class PartsKit {
 
 	/**
 	 * URL slug for the Parts Kit
+	 *
 	 * @var string
 	 */
 	const URL_SLUG = 'parts-kit';
 
 	/**
+	 * Instance of Gutenberg
+	 *
 	 * @var ?WPGutenberg
 	 */
 	private ?WPGutenberg $gutenberg = null;
@@ -27,25 +30,25 @@ class PartsKit {
 	 * Initialize the Parts Kit
 	 */
 	public function __construct() {
-		// Create rewrite rules
+		// Create rewrite rules.
 		$this->setup_rewrite_rules();
 
-		// Add Query Vars
+		// Add Query Vars.
 		$this->add_query_vars();
 
-		// Render Block JSON
+		// Render Block JSON.
 		$this->render_json();
 
-		// Render Parts Kit (Root)
+		// Render Parts Kit (Root).
 		$this->render_parts_kit();
 
-		// Render a Block
+		// Render a Block.
 		$this->render_block();
 
 		// Insert the Admin Menu page.
 		$this->add_admin_menu_page();
 
-		// Open Parts Kit in New Window
+		// Open Parts Kit in New Window.
 		$this->adjust_admin_link_target();
 	}
 
@@ -62,19 +65,19 @@ class PartsKit {
 			'init',
 			function () {
 				add_rewrite_rule(
-					preg_quote( self::URL_SLUG . '.json' ) . '$',
+					preg_quote( self::URL_SLUG . '.json', '/' ) . '$',
 					'index.php?' . self::URL_SLUG . '-json=1',
 					'top'
 				);
 
 				add_rewrite_rule(
-					preg_quote( self::URL_SLUG ) . '/([^/]+)/?$',
+					preg_quote( self::URL_SLUG, '/' ) . '/([^/]+)/?$',
 					'index.php?' . self::URL_SLUG . '=$matches[1]',
 					'top'
 				);
 
 				add_rewrite_rule(
-					preg_quote( self::URL_SLUG ) . '/?$',
+					preg_quote( self::URL_SLUG, '/' ) . '/?$',
 					'index.php?' . self::URL_SLUG . '=1',
 					'top'
 				);
@@ -146,7 +149,7 @@ class PartsKit {
 				]
 				*/
 
-				$parts = apply_filters( 'viget_parts_kit', [] );
+				$parts = apply_filters( 'vgtpk_parts_kit', [] );
 
 				if ( ! empty( $parts ) ) {
 					usort( $parts, fn( $a, $b ) => $a['title'] <=> $b['title'] );
@@ -184,7 +187,7 @@ class PartsKit {
 				$parts_kit_title = __( 'Parts Kit', 'viget-parts-kit' );
 				$parts_kit_url   = home_url( self::URL_SLUG . '.json' );
 
-				require VPK_PLUGIN_PATH . 'views/parts-kit.php';
+				require VGTPK_PLUGIN_PATH . 'views/parts-kit.php';
 
 				exit;
 			}
@@ -207,7 +210,7 @@ class PartsKit {
 				$this->gutenberg = new WPGutenberg();
 				$this->gutenberg?->load();
 
-				do_action( 'viget_parts_kit_init' );
+				do_action( 'vgtpk_parts_kit_init' );
 			}
 		);
 
@@ -220,7 +223,7 @@ class PartsKit {
 					return;
 				}
 
-				do_action( 'viget_parts_kit_render', $block_name );
+				do_action( 'vgtpk_parts_kit_render', $block_name );
 				defined( 'IS_PARTS_KIT' ) || define( 'IS_PARTS_KIT', true );
 
 				$this->disable_admin_bar();
@@ -236,13 +239,14 @@ class PartsKit {
 					'innerBlocks'  => [],
 				];
 
+				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				$output = apply_filters( 'the_content', trim( render_block( $block ) ) );
-				$output = apply_filters( 'viget_parts_kit_block_%', $output, $block_name );
-				$output = apply_filters( 'viget_parts_kit_block_' . $block_name, $output );
+				$output = apply_filters( 'vgtpk_parts_kit_block_%', $output, $block_name );
+				$output = apply_filters( 'vgtpk_parts_kit_block_' . $block_name, $output );
 
 				$output .= $this->source_code( $output );
 
-				require VPK_PLUGIN_PATH . 'views/block.php';
+				require VGTPK_PLUGIN_PATH . 'views/block.php';
 
 				exit;
 			},

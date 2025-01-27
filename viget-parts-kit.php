@@ -17,21 +17,21 @@
  */
 
 // Plugin version.
-const VPK_VERSION = '1.0.1';
+const VGTPK_VERSION = '1.0.1';
 
 // Plugin file.
-const VPK_PLUGIN_FILE = __FILE__;
+const VGTPK_PLUGIN_FILE = __FILE__;
 
 // Plugin path.
-define( 'VPK_PLUGIN_PATH', plugin_dir_path( VPK_PLUGIN_FILE ) );
+define( 'VGTPK_PLUGIN_PATH', plugin_dir_path( VGTPK_PLUGIN_FILE ) );
 
 // Plugin URL.
-define( 'VPK_PLUGIN_URL', plugin_dir_url( VPK_PLUGIN_FILE ) );
+define( 'VGTPK_PLUGIN_URL', plugin_dir_url( VGTPK_PLUGIN_FILE ) );
 
 // Include the PartsKit classes.
-require_once VPK_PLUGIN_PATH . 'src/classes/WPGutenberg.php';
-require_once VPK_PLUGIN_PATH . 'src/classes/PartsKit.php';
-require_once VPK_PLUGIN_PATH . 'src/classes/BlockParts.php';
+require_once VGTPK_PLUGIN_PATH . 'src/classes/WPGutenberg.php';
+require_once VGTPK_PLUGIN_PATH . 'src/classes/PartsKit.php';
+require_once VGTPK_PLUGIN_PATH . 'src/classes/BlockParts.php';
 
 // Init the Parts Kit.
 add_action(
