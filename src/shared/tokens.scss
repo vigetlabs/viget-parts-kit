@@ -1,0 +1,27 @@
+// The UI follows the current user's admin color scheme. PHP prints the
+// --vgtpk-* properties (see Colors::css()); these names point at them.
+$base: var(--vgtpk-base, #1d2327);
+$on-base: var(--vgtpk-on-base, #fff);
+$primary: var(--vgtpk-primary, #2271b1);
+$on-primary: var(--vgtpk-on-primary, #fff);
+$accent: var(--vgtpk-accent, #72aee6);
+$primary-soft: color-mix(in srgb, #{$primary} 10%, #fff);
+$primary-strong: color-mix(in srgb, #{$primary} 82%, #000);
+
+// WordPress admin neutrals and notice colors.
+$ink: #1d2327;
+$slate: #646970;
+$line: #dcdcde;
+$mist: #f0f0f1;
+$paper: #f6f7f7;
+$error: #d63638;
+$warning: #996800;
+
+$font: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif;
+$mono: ui-monospace, sfmono-regular, menlo, consolas, monospace;
+
+// A translucent version of the text color on the sidebar.
+@function on-base($amount) {
+
+	@return color-mix(in srgb, #{$on-base} #{$amount}, transparent);
+}
