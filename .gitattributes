@@ -1,0 +1,20 @@
+# Generated output. Collapsed in pull request diffs and excluded from the
+# repo's language stats. build/ is committed on purpose - Composer installs the
+# git archive, not the release zip, so removing it would break `composer require`.
+build/** linguist-generated=true
+languages/*.pot linguist-generated=true
+
+/.github export-ignore
+/docs export-ignore
+/AGENTS.md export-ignore
+/src export-ignore
+/tests export-ignore
+/bin export-ignore
+/.editorconfig export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.phpcs.xml export-ignore
+/.wp-env.json export-ignore
+/composer.lock export-ignore
+/package-lock.json export-ignore
+/webpack.config.js export-ignore

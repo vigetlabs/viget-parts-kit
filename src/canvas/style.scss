@@ -1,0 +1,71 @@
+// Canvas helpers. Kept neutral so they never compete with the theme.
+
+.vgtpk-label {
+	align-items: baseline;
+	border-top: 1px dashed currentcolor;
+	display: flex;
+	flex-wrap: wrap;
+	font-family: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif;
+	font-size: 12px;
+	font-weight: 400;
+	gap: 0.25rem 0.75rem;
+	letter-spacing: 0;
+	line-height: 1.4;
+	margin-bottom: 1rem !important;
+	margin-top: 3rem !important;
+	opacity: 0.55;
+	padding-top: 0.5rem;
+	text-transform: none;
+
+	&:first-child {
+		margin-top: 1.5rem !important;
+	}
+
+	&__name {
+		font-weight: 600;
+	}
+
+	&__description {
+		font-family: ui-monospace, sfmono-regular, menlo, consolas, monospace;
+	}
+
+	&.is-focused {
+		opacity: 1;
+	}
+
+	&.is-hidden {
+		display: none;
+	}
+}
+
+.vgtpk-canvas__main {
+	min-height: 100vh;
+	padding-bottom: 4rem;
+}
+
+.vgtpk-empty {
+	font-family: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif;
+	opacity: 0.6;
+	padding: 3rem 0;
+	text-align: center;
+}
+
+.vgtpk-toast {
+	background: #092f40;
+	border-radius: 4px;
+	bottom: 1rem;
+	color: #fff;
+	font: 13px/1.4 -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif;
+	left: 50%;
+	opacity: 0;
+	padding: 0.5rem 0.75rem;
+	pointer-events: none;
+	position: fixed;
+	transform: translateX(-50%);
+	transition: opacity 0.15s;
+	z-index: 100000;
+
+	&.is-visible {
+		opacity: 1;
+	}
+}
