@@ -18,6 +18,7 @@ import {
 	Ribbon,
 	SortHeader,
 	sortRows,
+	typeLabel,
 	useTooltip,
 } from './common';
 
@@ -60,7 +61,7 @@ export default function Content( {
 				return Object.keys( row.blocks ).length;
 			}
 			if ( column === 'type' ) {
-				return raw.postTypes[ row.type ] || row.type;
+				return typeLabel( raw, row );
 			}
 			return row[ column ] ?? '';
 		} );
@@ -78,6 +79,7 @@ export default function Content( {
 		downloadCsv( 'block-index-content.csv', [
 			[
 				'Title',
+				...( raw.network ? [ 'Site' ] : [] ),
 				'Type',
 				'Status',
 				'Blocks',
@@ -88,6 +90,7 @@ export default function Content( {
 			],
 			...rows.map( ( row ) => [
 				row.title,
+				...( raw.network ? [ row.siteName ] : [] ),
 				raw.postTypes[ row.type ] || row.type,
 				row.status,
 				row.total,
@@ -245,10 +248,7 @@ export default function Content( {
 											</span>
 										</button>
 									</td>
-									<td>
-										{ raw.postTypes[ record.type ] ||
-											record.type }
-									</td>
+									<td>{ typeLabel( raw, record ) }</td>
 									<td className="is-numeric">
 										{ num( record.total ) }
 									</td>

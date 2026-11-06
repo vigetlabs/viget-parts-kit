@@ -16,6 +16,7 @@ import Content from './content';
 import Health from './health';
 import Overview from './overview';
 import StylesTab from './styles-tab';
+import { Sites, buildRaw } from './network';
 import { aggregateBlocks, filterRecords, findings, num } from './data';
 
 const config = window.vgtpkBlockIndex || {};
@@ -26,10 +27,14 @@ const TABS = [
 	{ slug: 'content', label: __( 'Content', 'viget-parts-kit' ) },
 	{ slug: 'styles', label: __( 'Styles', 'viget-parts-kit' ) },
 	{ slug: 'health', label: __( 'Health', 'viget-parts-kit' ) },
+	...( config.network
+		? [ { slug: 'sites', label: __( 'Sites', 'viget-parts-kit' ) } ]
+		: [] ),
 ];
 
 const DEFAULT_VIEW = {
 	tab: 'overview',
+	site: 'all',
 	type: 'all',
 	status: 'all',
 	templates: true,
@@ -107,7 +112,7 @@ function timeAgo( value ) {
 }
 
 export default function App() {
-	const [ raw, setRaw ] = useState( null );
+	const [ data, setData ] = useState( null );
 	const [ error, setError ] = useState( '' );
 	const [ scan, setScan ] = useState( null );
 	const [ view, setFullView ] = useState( readHash );
@@ -121,8 +126,8 @@ export default function App() {
 
 	const load = useCallback(
 		() =>
-			api( 'index' )
-				.then( setRaw )
+			api( config.network ? 'network/index' : 'index' )
+				.then( setData )
 				.catch( ( err ) => setError( err.message ) ),
 		[]
 	);
@@ -164,12 +169,22 @@ export default function App() {
 		load().then( () => {} );
 	}, [] );
 
+	const raw = useMemo( () => {
+		if ( ! data || ! config.network ) {
+			return data;
+		}
+
+		return buildRaw( data, view.site );
+	}, [ data, view.site ] );
+
 	// First visit: nothing scanned yet, so scan right away.
 	useEffect( () => {
-		if ( raw && ! raw.scannedAt && ! scan ) {
+		if ( ! config.network && raw && ! raw.scannedAt && ! scan ) {
 			runScan( 'full' );
 		}
 	}, [ raw ] );
+
+	const readySites = data?.sites?.filter( ( site ) => site.ready ) || [];
 
 	const records = useMemo(
 		() => ( raw ? filterRecords( raw.records, view ) : [] ),
@@ -205,6 +220,8 @@ export default function App() {
 			)
 		: [];
 
+	const partsKitUrl = raw?.partsKitUrl || config.partsKitUrl;
+
 	return (
 		<div className="vgtpk-index">
 			<header className="vgtpk-index__header">
@@ -213,92 +230,122 @@ export default function App() {
 					<h1>{ __( 'Block Index', 'viget-parts-kit' ) }</h1>
 				</div>
 
-				<div className="vgtpk-index__scan">
-					{ scan ? (
-						<div
-							className="vgtpk-scan"
-							role="status"
-							aria-live="polite"
-						>
-							<span>
-								{ scan.total
-									? sprintf(
-											/* translators: 1: processed, 2: total. */
-											__(
-												'Scanning %1$s of %2$s',
-												'viget-parts-kit'
-											),
-											num(
-												Math.min(
-													scan.processed,
-													scan.total
-												)
-											),
-											num( scan.total )
-										)
-									: __( 'Scanning…', 'viget-parts-kit' ) }
-							</span>
-							<span className="vgtpk-scan__bar">
-								<span
-									style={ {
-										width: scan.total
-											? `${ ( Math.min( scan.processed, scan.total ) / scan.total ) * 100 }%`
-											: '6%',
-									} }
-								/>
-							</span>
-						</div>
-					) : (
-						raw?.scannedAt && (
+				{ config.network ? (
+					<div className="vgtpk-index__scan">
+						{ data && (
 							<p className="vgtpk-scan__meta">
 								{ sprintf(
-									/* translators: %s: date and time. */
-									__( 'Scanned %s.', 'viget-parts-kit' ),
-									timeAgo( raw.scannedAt )
+									/* translators: 1: sites with an index, 2: all sites. */
+									__(
+										'%1$s of %2$s sites indexed.',
+										'viget-parts-kit'
+									),
+									num( readySites.length ),
+									num( data.sites.length )
 								) }{ ' ' }
-								{ raw.changed > 0 && (
-									<strong>
-										{ sprintf(
-											/* translators: %s: number of changed items. */
-											_n(
-												'%s item changed since.',
-												'%s items changed since.',
-												raw.changed,
-												'viget-parts-kit'
-											),
-											num( raw.changed )
-										) }
-									</strong>
-								) }
+								<button
+									type="button"
+									className="vgtpk-link"
+									onClick={ () =>
+										setView( { tab: 'sites' } )
+									}
+								>
+									{ __(
+										'See scan status',
+										'viget-parts-kit'
+									) }
+								</button>
 							</p>
-						)
-					) }
-
-					<div className="vgtpk-index__actions">
-						<button
-							type="button"
-							className="vgtpk-button"
-							onClick={ () => runScan( 'changes' ) }
-							disabled={ !! scan || ! raw }
-						>
-							{ __( 'Refresh', 'viget-parts-kit' ) }
-						</button>
-						<button
-							type="button"
-							className="vgtpk-button vgtpk-button--ghost"
-							onClick={ () => runScan( 'full' ) }
-							disabled={ !! scan || ! raw }
-						>
-							{ __( 'Rescan everything', 'viget-parts-kit' ) }
-						</button>
-						<a
-							className="vgtpk-button vgtpk-button--ghost"
-							href={ config.partsKitUrl }
-						>
-							{ __( 'Open Parts Kit', 'viget-parts-kit' ) }
-						</a>
+						) }
 					</div>
-				</div>
+				) : (
+					<div className="vgtpk-index__scan">
+						{ scan ? (
+							<div
+								className="vgtpk-scan"
+								role="status"
+								aria-live="polite"
+							>
+								<span>
+									{ scan.total
+										? sprintf(
+												/* translators: 1: processed, 2: total. */
+												__(
+													'Scanning %1$s of %2$s',
+													'viget-parts-kit'
+												),
+												num(
+													Math.min(
+														scan.processed,
+														scan.total
+													)
+												),
+												num( scan.total )
+											)
+										: __( 'Scanning…', 'viget-parts-kit' ) }
+								</span>
+								<span className="vgtpk-scan__bar">
+									<span
+										style={ {
+											width: scan.total
+												? `${ ( Math.min( scan.processed, scan.total ) / scan.total ) * 100 }%`
+												: '6%',
+										} }
+									/>
+								</span>
+							</div>
+						) : (
+							raw?.scannedAt && (
+								<p className="vgtpk-scan__meta">
+									{ sprintf(
+										/* translators: %s: date and time. */
+										__( 'Scanned %s.', 'viget-parts-kit' ),
+										timeAgo( raw.scannedAt )
+									) }{ ' ' }
+									{ raw.changed > 0 && (
+										<strong>
+											{ sprintf(
+												/* translators: %s: number of changed items. */
+												_n(
+													'%s item changed since.',
+													'%s items changed since.',
+													raw.changed,
+													'viget-parts-kit'
+												),
+												num( raw.changed )
+											) }
+										</strong>
+									) }
+								</p>
+							)
+						) }
+
+						<div className="vgtpk-index__actions">
+							<button
+								type="button"
+								className="vgtpk-button"
+								onClick={ () => runScan( 'changes' ) }
+								disabled={ !! scan || ! raw }
+							>
+								{ __( 'Refresh', 'viget-parts-kit' ) }
+							</button>
+							<button
+								type="button"
+								className="vgtpk-button vgtpk-button--ghost"
+								onClick={ () => runScan( 'full' ) }
+								disabled={ !! scan || ! raw }
+							>
+								{ __( 'Rescan everything', 'viget-parts-kit' ) }
+							</button>
+							<a
+								className="vgtpk-button vgtpk-button--ghost"
+								href={ config.partsKitUrl }
+							>
+								{ __( 'Open Parts Kit', 'viget-parts-kit' ) }
+							</a>
+						</div>
+					</div>
+				) }
 			</header>
 
 			{ error && (
@@ -351,6 +398,40 @@ export default function App() {
 						</nav>
 
 						<div className="vgtpk-scope">
+							{ config.network && (
+								<label
+									htmlFor="vgtpk-app-field-0"
+									className="vgtpk-field"
+								>
+									<span className="screen-reader-text">
+										{ __( 'Site', 'viget-parts-kit' ) }
+									</span>
+									<select
+										id="vgtpk-app-field-0"
+										value={ view.site }
+										onChange={ ( event ) =>
+											setView( {
+												site: event.target.value,
+											} )
+										}
+									>
+										<option value="all">
+											{ __(
+												'All sites',
+												'viget-parts-kit'
+											) }
+										</option>
+										{ readySites.map( ( site ) => (
+											<option
+												key={ site.id }
+												value={ String( site.id ) }
+											>
+												{ site.name }
+											</option>
+										) ) }
+									</select>
+								</label>
+							) }
 							<label
 								htmlFor="vgtpk-app-field-1"
 								className="vgtpk-field"
@@ -461,7 +542,7 @@ export default function App() {
 								}
 								setView( patch );
 							} }
-							partsKitUrl={ config.partsKitUrl }
+							partsKitUrl={ partsKitUrl }
 						/>
 					) }
 					{ view.tab === 'content' && (
@@ -479,6 +560,9 @@ export default function App() {
 					) }
 					{ view.tab === 'health' && (
 						<Health issues={ issues } raw={ raw } goTo={ goTo } />
+					) }
+					{ view.tab === 'sites' && config.network && (
+						<Sites sites={ data.sites } setView={ setView } />
 					) }
 				</>
 			) }

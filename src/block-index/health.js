@@ -11,7 +11,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { num } from './data';
-import { RecordLinks } from './common';
+import { RecordLinks, typeLabel } from './common';
 
 const LEVELS = {
 	critical: { glyph: '!', label: __( 'Fix', 'viget-parts-kit' ) },
@@ -146,9 +146,10 @@ export default function Health( { issues, raw, goTo } ) {
 															'viget-parts-kit'
 														) }
 													<small>
-														{ raw.postTypes[
-															record.type
-														] || record.type }
+														{ typeLabel(
+															raw,
+															record
+														) }
 													</small>
 												</span>
 												<RecordLinks

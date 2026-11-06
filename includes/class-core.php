@@ -88,6 +88,13 @@ class Core {
 	public ?Block_Index $block_index = null;
 
 	/**
+	 * Network Block Index instance, on multisite only.
+	 *
+	 * @var Network_Index|null
+	 */
+	public ?Network_Index $network_index = null;
+
+	/**
 	 * Admin instance.
 	 *
 	 * @var Admin|null
@@ -130,6 +137,7 @@ class Core {
 		require_once VGTPK_PLUGIN_PATH . 'includes/class-generator.php';
 		require_once VGTPK_PLUGIN_PATH . 'includes/class-block-audit.php';
 		require_once VGTPK_PLUGIN_PATH . 'includes/class-block-index.php';
+		require_once VGTPK_PLUGIN_PATH . 'includes/class-network-index.php';
 		require_once VGTPK_PLUGIN_PATH . 'includes/class-admin.php';
 
 		$this->settings    = new Settings();
@@ -142,6 +150,10 @@ class Core {
 		$this->generator   = new Generator();
 		$this->block_index = new Block_Index();
 		$this->admin       = new Admin();
+
+		if ( is_multisite() ) {
+			$this->network_index = new Network_Index();
+		}
 
 		add_action( 'init', [ $this, 'maybe_flush_rewrites' ], 99 );
 		add_action( 'init', [ $this, 'load_textdomain' ] );

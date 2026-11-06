@@ -210,6 +210,13 @@ export function sortRows( rows, sort, getter ) {
 	} );
 }
 
+// Content type label, with the site on the network index.
+export function typeLabel( raw, record ) {
+	const type = raw.postTypes[ record.type ] || record.type;
+
+	return record.siteName ? `${ type } · ${ record.siteName }` : type;
+}
+
 // Edit and view links for a record.
 export function RecordLinks( { record } ) {
 	return (

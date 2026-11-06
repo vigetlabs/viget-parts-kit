@@ -165,14 +165,15 @@ class Block_Index {
 	/**
 	 * Count posts changed since the last scan. One cheap query.
 	 *
-	 * @param string $since GMT datetime.
+	 * @param string     $since GMT datetime.
+	 * @param array|null $types Post types. Defaults to this site's scanned types.
 	 *
 	 * @return int
 	 */
-	public function count_changed( string $since ): int {
+	public function count_changed( string $since, ?array $types = null ): int {
 		global $wpdb;
 
-		$types    = self::post_types();
+		$types    = $types ?? self::post_types();
 		$statuses = self::statuses();
 
 		if ( ! $types ) {
@@ -200,6 +201,24 @@ class Block_Index {
 	public function rest_get(): WP_REST_Response {
 		$index = $this->get();
 
+		return new WP_REST_Response(
+			array_merge(
+				[
+					'scannedAt' => $index['scanned_at'] ?? null,
+					'changed'   => ! empty( $index['scanned_at'] ) ? $this->count_changed( $index['scanned_at'] ) : null,
+					'records'   => array_values( $index['records'] ?? [] ),
+				],
+				$this->context()
+			)
+		);
+	}
+
+	/**
+	 * This site's registered blocks, labels and theme. Saved with each scan so the network index can read it.
+	 *
+	 * @return array
+	 */
+	public function context(): array {
 		$registered = [];
 		$styles     = WP_Block_Styles_Registry::get_instance();
 		$audit      = new Block_Audit();
@@ -260,25 +279,22 @@ class Block_Index {
 			$statuses[ $status ] = $object ? $object->label : $status;
 		}
 
-		return new WP_REST_Response(
-			[
-				'scannedAt'  => $index['scanned_at'] ?? null,
-				'changed'    => ! empty( $index['scanned_at'] ) ? $this->count_changed( $index['scanned_at'] ) : null,
-				'records'    => array_values( $index['records'] ?? [] ),
-				'registered' => $registered,
-				'categories' => array_map(
-					static fn( $category ) => [
-						'slug'  => $category['slug'],
-						'title' => $category['title'],
-					],
-					get_block_categories( new WP_Post( (object) [ 'post_type' => 'post' ] ) )
-				),
-				'postTypes'  => $post_types,
-				'statuses'   => $statuses,
-				'theme'      => array_values( array_unique( [ 'acf', get_stylesheet(), get_template(), (string) wp_get_theme()->get( 'TextDomain' ) ] ) ),
-				'blockTheme' => wp_is_block_theme(),
-			]
-		);
+		return [
+			'registered'  => $registered,
+			'categories'  => array_map(
+				static fn( $category ) => [
+					'slug'  => $category['slug'],
+					'title' => $category['title'],
+				],
+				get_block_categories( new WP_Post( (object) [ 'post_type' => 'post' ] ) )
+			),
+			'postTypes'   => $post_types,
+			'statuses'    => $statuses,
+			'theme'       => array_values( array_unique( [ 'acf', get_stylesheet(), get_template(), (string) wp_get_theme()->get( 'TextDomain' ) ] ) ),
+			'blockTheme'  => wp_is_block_theme(),
+			'partsKitUrl' => Post_Type::archive_url(),
+			'scanTypes'   => self::post_types(),
+		];
 	}
 
 	/**
@@ -410,6 +426,7 @@ class Block_Index {
 				'schema'     => self::SCHEMA,
 				'scanned_at' => $pending['started_at'],
 				'records'    => $pending['records'],
+				'context'    => $this->context(),
 			],
 			false
 		);

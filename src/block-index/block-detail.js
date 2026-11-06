@@ -19,6 +19,7 @@ import {
 	LevelPill,
 	RecordLinks,
 	StatusPill,
+	typeLabel,
 } from './common';
 
 const config = window.vgtpkBlockIndex || {};
@@ -125,9 +126,7 @@ function Usage( { block, raw } ) {
 								{ record.title ||
 									__( '(no title)', 'viget-parts-kit' ) }
 							</td>
-							<td>
-								{ raw.postTypes[ record.type ] || record.type }
-							</td>
+							<td>{ typeLabel( raw, record ) }</td>
 							<td>
 								{ raw.statuses[ record.status ] ||
 									record.status }
@@ -584,10 +583,8 @@ function Spec( { name, enabled } ) {
 }
 
 function Audit( { block, enabled } ) {
-	const { data, error } = useInspection(
-		block.name,
-		enabled && block.registered
-	);
+	const live = enabled && block.registered;
+	const { data, error } = useInspection( block.name, live );
 
 	// Server findings include the quick ones, so usage findings are added on top.
 	const usage = block.findings.filter(
@@ -631,7 +628,7 @@ function Audit( { block, enabled } ) {
 					</div>
 				</div>
 
-				{ block.registered && (
+				{ live && (
 					<div className="vgtpk-render">
 						<h4>{ __( 'Render check', 'viget-parts-kit' ) }</h4>
 						{ ! data && ! error && (
@@ -732,10 +729,19 @@ function Audit( { block, enabled } ) {
 				</ol>
 			) }
 
-			{ ! data && block.registered && (
+			{ ! data && live && (
 				<p className="vgtpk-muted">
 					{ __(
 						'Checking block.json, ACF wiring and rendering…',
+						'viget-parts-kit'
+					) }
+				</p>
+			) }
+
+			{ ! enabled && block.registered && (
+				<p className="vgtpk-muted">
+					{ __(
+						'The block.json, ACF and render checks run against one site’s theme. Open that site’s Block Index to see them.',
 						'viget-parts-kit'
 					) }
 				</p>
@@ -765,7 +771,7 @@ export default function BlockDetail( { block, raw, partsKitUrl } ) {
 			label: __( 'Styles', 'viget-parts-kit' ),
 			count: styleCount,
 		},
-		...( block.registered
+		...( block.registered && ! raw.network
 			? [ { slug: 'spec', label: __( 'Spec', 'viget-parts-kit' ) } ]
 			: [] ),
 		{
@@ -796,7 +802,7 @@ export default function BlockDetail( { block, raw, partsKitUrl } ) {
 							{ origin.label }
 						</span>
 					) }
-					{ block.inKit && (
+					{ block.inKit && partsKitUrl && (
 						<a
 							className="vgtpk-button vgtpk-button--ghost"
 							href={ `${ partsKitUrl }?item=${ encodeURIComponent( block.name ) }` }
@@ -853,7 +859,9 @@ export default function BlockDetail( { block, raw, partsKitUrl } ) {
 				{ tab === 'usage' && <Usage block={ block } raw={ raw } /> }
 				{ tab === 'styles' && <Styles block={ block } /> }
 				{ tab === 'spec' && <Spec name={ block.name } enabled /> }
-				{ tab === 'audit' && <Audit block={ block } enabled /> }
+				{ tab === 'audit' && (
+					<Audit block={ block } enabled={ ! raw.network } />
+				) }
 			</div>
 		</div>
 	);

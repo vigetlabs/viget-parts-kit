@@ -29,6 +29,7 @@ Viget Parts Kit gives a team one place to review every block a site offers, rend
 * Overview treemap, a sortable block table with per-page breakdowns, a content table with a "ribbon" of each page's structure, block style usage, and a Health tab that flags blocks that are no longer registered, orphaned style classes, classic content and oversized pages.
 * Covers posts, pages, custom post types, synced patterns, navigation menus, and block templates and template parts (including ones that only exist as theme files).
 * Export blocks or content to CSV.
+* On multisite, **Network Admin → Block Index** rolls every site's index into one view, filterable by site.
 
 = Built to stay out of the way =
 
@@ -48,6 +49,7 @@ Viget Parts Kit gives a team one place to review every block a site offers, rend
 * Samples are built in the block editor and rendered by the theme, covering every block style, alignment, text alignment, heading level and flex justification.
 * Added viewport presets with a draggable width, palette backgrounds, layout contexts, sample labels, a markup panel with copy, and keyboard shortcuts (`/` to search, `[` and `]` to step through blocks).
 * Added QA pages: Parts Kit posts for kitchen sinks and block demos, plus "start a QA page from these samples".
+* Added a network Block Index on multisite that combines every site's index, filterable by site.
 * Added the Block Index screen. Each block opens to Usage, Styles, Spec (attributes, supports, context, variations, assets, ACF fields, block.json source) and an Audit that checks registration, block.json, usage and a live render of the sample.
 * Added settings for who can view the Parts Kit, blocks to leave out, and placeholder image colors.
 * Added a GitHub release updater, uninstall cleanup, translations template, CI, and release tooling matching Viget's other plugins.

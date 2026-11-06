@@ -35,6 +35,10 @@ The catalog is built inside the real block editor, so ACF blocks, third-party bl
 
 Scans run in batches from the screen. **Refresh** rescans only what changed since the last scan.
 
+### Multisite
+
+**Network Admin → Block Index** combines every site's last scan, filterable by site. The **Sites** tab shows each site's scan status and links to its own Block Index, where scans run. Spec and the render check are only on each site's own screen.
+
 ## Performance
 
 The plugin is a utility, so it's built to cost nothing on a production site:

@@ -18,6 +18,7 @@ Everything here is prefixed `vgtpk_`. The plugin core is available from `vgtpk()
 | `vgtpk_can_view` | Settings page choice | Who can open the Parts Kit. Return `true` to make it public. |
 | `vgtpk_can_manage` | `edit_theme_options` | Who can rebuild the catalog. Also gates saving it over REST. |
 | `vgtpk_can_index` | `edit_others_posts` | Who can open the Block Index. |
+| `vgtpk_can_index_network` | `manage_network_options` | Multisite: who can open the network Block Index in Network Admin. |
 | `vgtpk_settings` | Saved settings | Override any setting in code (`visibility`, `capability`, `excluded_blocks`, `placeholder_bg`, `placeholder_fg`). |
 
 ### Colors
@@ -145,6 +146,7 @@ add_filter( 'vgtpk_contexts', function ( array $contexts ): array {
 | Filter | Arguments | Use |
 | --- | --- | --- |
 | `vgtpk_index_post_types` | `array $types` | Post types the scan reads. Templates and template parts are always read through `get_block_templates()`. |
+| `vgtpk_network_index_sites` | `array $ids` | Multisite: site IDs the network Block Index reads. Defaults to every site that isn't archived, deleted or spam. |
 | `vgtpk_audit_known_keys` | `array $keys` | block.json keys the audit accepts beyond the core schema. Defaults to `acf` and `settings` (Viget Blocks Toolkit). |
 
 The Audit checks registration for every block (title, description, icon, keywords, category, API version, parent/ancestor/allowedBlocks, attribute types and defaults, variations, dynamic blocks allowing HTML edits, missing examples) and combines them with usage (unregistered, unused, drafts only, style mismatches). Opening a block's Audit tab adds block.json checks (unknown keys, `file:` references that don't exist, `$schema`, `textdomain`, ACF `mode` and `renderTemplate`) and renders the Parts Kit sample on the server, reporting errors, PHP notices and empty output.
@@ -177,6 +179,7 @@ All under `/wp-json/vgtpk/v1/`.
 | `index` | GET | can index | The Block Index and the registered block list. |
 | `index/scan` | POST | can index | Scan one batch (`mode: full|changes`, `offset`). |
 | `index/block?name=` | GET | can index | One block's spec, block.json, deep audit and render check. |
+| `network/index` | GET | can index network | Multisite: every site's saved index and scan status. |
 
 ## How the catalog is built
 

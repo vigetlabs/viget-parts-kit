@@ -93,6 +93,7 @@ export function aggregateBlocks( raw, records ) {
 				quickAudit: block?.audit || [],
 				registeredStyles: block?.styles || [],
 				instances: 0,
+				unregisteredUses: 0,
 				pages: [],
 				styles: {},
 				aligns: {},
@@ -109,6 +110,10 @@ export function aggregateBlocks( raw, records ) {
 			const entry = row( name );
 			entry.instances += count;
 			entry.pages.push( { record, count } );
+
+			if ( record.unregistered?.includes( name ) ) {
+				entry.unregisteredUses += count;
+			}
 		} );
 
 		Object.entries( record.styles || {} ).forEach( ( [ key, count ] ) => {
@@ -274,7 +279,8 @@ export function usageFindings( entry ) {
  * @return {string} Status slug.
  */
 function statusOf( entry ) {
-	if ( ! entry.registered ) {
+	// On the network index, a block can be registered on one site and missing on another.
+	if ( ! entry.registered || entry.unregisteredUses ) {
 		return 'missing';
 	}
 
@@ -405,9 +411,16 @@ export function findings( blocks, records, all ) {
 		} );
 	}
 
-	const refs = new Set( all.flatMap( ( record ) => record.refs || [] ) );
+	// Pattern IDs repeat across sites, so they're keyed by site on the network index.
+	const refs = new Set(
+		all.flatMap( ( record ) =>
+			( record.refs || [] ).map( ( ref ) => `${ record.site }:${ ref }` )
+		)
+	);
 	const orphanPatterns = all.filter(
-		( record ) => record.type === 'wp_block' && ! refs.has( record.id )
+		( record ) =>
+			record.type === 'wp_block' &&
+			! refs.has( `${ record.site }:${ record.id }` )
 	);
 	if ( orphanPatterns.length ) {
 		list.push( {

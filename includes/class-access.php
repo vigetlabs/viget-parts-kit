@@ -58,6 +58,20 @@ class Access {
 	}
 
 	/**
+	 * Whether the current user can open the network Block Index.
+	 *
+	 * @return bool
+	 */
+	public static function can_index_network(): bool {
+		/**
+		 * Filters whether the current user can open the network Block Index.
+		 *
+		 * @param bool $can_index Defaults to the manage_network_options capability.
+		 */
+		return (bool) apply_filters( 'vgtpk_can_index_network', current_user_can( 'manage_network_options' ) );
+	}
+
+	/**
 	 * Stop the request unless the visitor can view the Parts Kit.
 	 *
 	 * @return void
