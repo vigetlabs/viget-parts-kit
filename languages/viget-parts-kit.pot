@@ -1,0 +1,1976 @@
+# Copyright (C) 2026 Viget
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Viget Parts Kit 2.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/viget-parts-kit\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-20T17:20:58-05:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: viget-parts-kit\n"
+
+#. Plugin Name of the plugin
+#: viget-parts-kit.php
+msgid "Viget Parts Kit"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: viget-parts-kit.php
+msgid "https://github.com/vigetlabs/viget-parts-kit"
+msgstr ""
+
+#. Description of the plugin
+#: viget-parts-kit.php
+msgid "A browsable, theme-styled kit of every registered block, plus a Block Index showing where each block is used."
+msgstr ""
+
+#. Author of the plugin
+#: viget-parts-kit.php
+msgid "Viget"
+msgstr ""
+
+#. Author URI of the plugin
+#: viget-parts-kit.php
+msgid "https://www.viget.com/"
+msgstr ""
+
+#: includes/class-access.php:75
+msgid "You don’t have access to the Parts Kit. Ask a site administrator to change who can view it."
+msgstr ""
+
+#: includes/class-access.php:76
+#: includes/class-admin.php:92
+#: includes/class-canvas.php:156
+#: includes/class-post-type.php:77
+#: includes/class-post-type.php:79
+#: views/explorer.php:21
+#: build/explorer.js:4
+#: build/explorer.js:10
+#: build/explorer.js:11
+msgid "Parts Kit"
+msgstr ""
+
+#: includes/class-admin.php:45
+#: includes/class-admin.php:46
+#: includes/class-admin.php:108
+#: includes/class-post-type.php:86
+#: build/block-index.js:22
+msgid "Open Parts Kit"
+msgstr ""
+
+#: includes/class-admin.php:55
+#: includes/class-admin.php:56
+#: views/admin/block-index.php:13
+#: build/block-index.js:19
+#: build/explorer.js:5
+msgid "Block Index"
+msgstr ""
+
+#: includes/class-admin.php:68
+#: views/admin/settings.php:20
+msgid "Parts Kit Settings"
+msgstr ""
+
+#: includes/class-admin.php:69
+#: includes/class-admin.php:109
+msgid "Settings"
+msgstr ""
+
+#: includes/class-block-audit.php:88
+msgid "No title"
+msgstr ""
+
+#: includes/class-block-audit.php:88
+msgid "The inserter shows the raw block name instead."
+msgstr ""
+
+#: includes/class-block-audit.php:88
+msgid "Add a \"title\" to block.json."
+msgstr ""
+
+#: includes/class-block-audit.php:92
+msgid "No description"
+msgstr ""
+
+#: includes/class-block-audit.php:92
+msgid "Authors see an empty panel when they select the block, and the inserter preview has no explanation."
+msgstr ""
+
+#: includes/class-block-audit.php:92
+msgid "Add a one-sentence \"description\" saying when to use the block."
+msgstr ""
+
+#: includes/class-block-audit.php:96
+msgid "No icon"
+msgstr ""
+
+#: includes/class-block-audit.php:96
+msgid "The inserter falls back to a generic block icon, which makes it harder to find."
+msgstr ""
+
+#: includes/class-block-audit.php:96
+msgid "Set \"icon\" to a Dashicon slug or an SVG."
+msgstr ""
+
+#: includes/class-block-audit.php:100
+msgid "No keywords"
+msgstr ""
+
+#: includes/class-block-audit.php:100
+msgid "Inserter search only matches the title."
+msgstr ""
+
+#: includes/class-block-audit.php:100
+msgid "Add a few \"keywords\" authors might search for."
+msgstr ""
+
+#. translators: %s: category slug.
+#: includes/class-block-audit.php:108
+#, php-format
+msgid "Category \"%s\" isn’t registered"
+msgstr ""
+
+#: includes/class-block-audit.php:109
+msgid "The block lands in an unexpected place in the inserter."
+msgstr ""
+
+#: includes/class-block-audit.php:110
+msgid "Register the category with the block_categories_all filter, or use an existing one."
+msgstr ""
+
+#. translators: %d: API version.
+#: includes/class-block-audit.php:120
+#, php-format
+msgid "API version %d"
+msgstr ""
+
+#: includes/class-block-audit.php:121
+msgid "Blocks below API version 3 keep the editor from using the iframed canvas, so editor styles and layout can differ from the frontend."
+msgstr ""
+
+#: includes/class-block-audit.php:122
+msgid "Set \"apiVersion\": 3 and test the block in the editor."
+msgstr ""
+
+#. translators: 1: block.json key, 2: block name.
+#: includes/class-block-audit.php:138
+#, php-format
+msgid "%1$s lists \"%2$s\", which isn’t registered"
+msgstr ""
+
+#: includes/class-block-audit.php:140
+msgid "Authors can’t add it here, so the restriction does less than intended."
+msgstr ""
+
+#: includes/class-block-audit.php:141
+msgid "The block can only be inserted inside a block that doesn’t exist, so authors can’t add it at all."
+msgstr ""
+
+#: includes/class-block-audit.php:142
+msgid "Fix the name or register the missing block."
+msgstr ""
+
+#: includes/class-block-audit.php:156
+msgid "Dynamic block allows “Edit as HTML”"
+msgstr ""
+
+#: includes/class-block-audit.php:156
+msgid "Its markup is generated on the server, so HTML edits are thrown away on save."
+msgstr ""
+
+#: includes/class-block-audit.php:156
+msgid "Set \"supports\": { \"html\": false }."
+msgstr ""
+
+#: includes/class-block-audit.php:160
+msgid "No example"
+msgstr ""
+
+#: includes/class-block-audit.php:160
+msgid "The inserter can’t show a preview when authors hover the block."
+msgstr ""
+
+#: includes/class-block-audit.php:160
+msgid "Add an \"example\" with representative attributes."
+msgstr ""
+
+#. translators: %s: attribute name.
+#: includes/class-block-audit.php:184
+#, php-format
+msgid "Attribute \"%s\" has no type"
+msgstr ""
+
+#: includes/class-block-audit.php:185
+msgid "Values aren’t validated, so anything can be saved into it."
+msgstr ""
+
+#: includes/class-block-audit.php:186
+msgid "Add a \"type\"."
+msgstr ""
+
+#. translators: 1: attribute name, 2: type.
+#: includes/class-block-audit.php:198
+#, php-format
+msgid "Attribute \"%1$s\" has an unknown type \"%2$s\""
+msgstr ""
+
+#: includes/class-block-audit.php:199
+msgid "The editor rejects every value, so the attribute never saves."
+msgstr ""
+
+#. translators: %s: valid types.
+#: includes/class-block-audit.php:201
+#, php-format
+msgid "Use one of: %s."
+msgstr ""
+
+#. translators: 1: attribute name, 2: declared type.
+#: includes/class-block-audit.php:213
+#, php-format
+msgid "Default for \"%1$s\" doesn’t match its type (%2$s)"
+msgstr ""
+
+#: includes/class-block-audit.php:214
+msgid "The editor treats the default as invalid and may drop it or show the block as needing recovery."
+msgstr ""
+
+#: includes/class-block-audit.php:215
+msgid "Change the default or the type so they agree."
+msgstr ""
+
+#. translators: %s: attribute name.
+#: includes/class-block-audit.php:225
+#, php-format
+msgid "Default for \"%s\" isn’t one of its allowed values"
+msgstr ""
+
+#: includes/class-block-audit.php:226
+msgid "The block starts in a state authors can’t pick again."
+msgstr ""
+
+#: includes/class-block-audit.php:227
+msgid "Add the default to \"enum\", or change it."
+msgstr ""
+
+#. translators: %s: variation name.
+#: includes/class-block-audit.php:288
+#, php-format
+msgid "Variation \"%s\" uses \"default\" instead of \"isDefault\""
+msgstr ""
+
+#: includes/class-block-audit.php:289
+msgid "The editor ignores \"default\", so the base block shows in the inserter alongside every variation."
+msgstr ""
+
+#: includes/class-block-audit.php:290
+msgid "Rename the key to \"isDefault\"."
+msgstr ""
+
+#. translators: %s: variation name.
+#: includes/class-block-audit.php:300
+#, php-format
+msgid "Variation \"%s\" has no title"
+msgstr ""
+
+#: includes/class-block-audit.php:301
+msgid "It shows in the inserter without a name."
+msgstr ""
+
+#: includes/class-block-audit.php:302
+msgid "Add a \"title\"."
+msgstr ""
+
+#. translators: %d: count.
+#: includes/class-block-audit.php:313
+#, php-format
+msgid "%d variations are marked isDefault"
+msgstr ""
+
+#: includes/class-block-audit.php:314
+msgid "Only one can replace the base block in the inserter, and which one wins isn’t guaranteed."
+msgstr ""
+
+#: includes/class-block-audit.php:315
+msgid "Keep isDefault on one variation."
+msgstr ""
+
+#. translators: %s: key.
+#: includes/class-block-audit.php:401
+#, php-format
+msgid "Unknown key \"%s\""
+msgstr ""
+
+#: includes/class-block-audit.php:402
+msgid "It isn’t part of the block.json schema, so WordPress ignores it. Often a typo or a key that belongs inside \"supports\"."
+msgstr ""
+
+#: includes/class-block-audit.php:403
+msgid "Fix the spelling, move it, or add it to vgtpk_audit_known_keys if a plugin reads it."
+msgstr ""
+
+#: includes/class-block-audit.php:410
+msgid "No $schema"
+msgstr ""
+
+#: includes/class-block-audit.php:410
+msgid "Editors can’t autocomplete or validate the file."
+msgstr ""
+
+#: includes/class-block-audit.php:410
+msgid "Add \"$schema\": \"https://schemas.wp.org/trunk/block.json\"."
+msgstr ""
+
+#: includes/class-block-audit.php:414
+msgid "No textdomain"
+msgstr ""
+
+#: includes/class-block-audit.php:414
+msgid "The title, description and keywords can’t be translated."
+msgstr ""
+
+#: includes/class-block-audit.php:414
+msgid "Add the theme or plugin text domain."
+msgstr ""
+
+#. translators: 1: key, 2: file reference.
+#: includes/class-block-audit.php:430
+#, php-format
+msgid "%1$s points to %2$s, which doesn’t exist"
+msgstr ""
+
+#: includes/class-block-audit.php:432
+msgid "The block renders nothing on the frontend."
+msgstr ""
+
+#: includes/class-block-audit.php:433
+msgid "The asset never loads. Usually a missing build step."
+msgstr ""
+
+#: includes/class-block-audit.php:434
+msgid "Build the asset or fix the path."
+msgstr ""
+
+#: includes/class-block-audit.php:445
+msgid "No ACF mode"
+msgstr ""
+
+#: includes/class-block-audit.php:445
+msgid "ACF picks its default, which may open the field form instead of a preview."
+msgstr ""
+
+#: includes/class-block-audit.php:445
+msgid "Set \"acf\": { \"mode\": \"preview\" }."
+msgstr ""
+
+#. translators: %s: template path.
+#: includes/class-block-audit.php:454
+#, php-format
+msgid "renderTemplate %s doesn’t exist"
+msgstr ""
+
+#: includes/class-block-audit.php:455
+msgid "The block renders nothing."
+msgstr ""
+
+#: includes/class-block-audit.php:456
+msgid "Fix the path or add the template."
+msgstr ""
+
+#: includes/class-block-audit.php:548
+msgid "block.json isn’t valid JSON"
+msgstr ""
+
+#: includes/class-block-audit.php:548
+msgid "Fix the syntax error."
+msgstr ""
+
+#: includes/class-block-audit.php:566
+msgid "The sample throws an error when it renders"
+msgstr ""
+
+#: includes/class-block-audit.php:566
+msgid "Check the render template with the sample content shown in the Parts Kit."
+msgstr ""
+
+#. translators: %d: count.
+#: includes/class-block-audit.php:574
+#, php-format
+msgid "Rendering raises %d PHP notice"
+msgid_plural "Rendering raises %d PHP notices"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-block-audit.php:576
+msgid "Usually an unchecked field or array key. Guard it in the render template."
+msgstr ""
+
+#: includes/class-block-audit.php:581
+msgid "The sample renders nothing"
+msgstr ""
+
+#: includes/class-block-audit.php:581
+msgid "With sample content, the block produced no markup. It may need content or context the sample doesn’t provide."
+msgstr ""
+
+#: includes/class-block-audit.php:581
+msgid "Give it sample content with vgtpk_block_config, or check the render template."
+msgstr ""
+
+#: includes/class-block-index.php:295
+msgid "That block isn’t registered."
+msgstr ""
+
+#: includes/class-block-index.php:635
+msgid "You don’t have access to the Block Index."
+msgstr ""
+
+#: includes/class-canvas.php:159
+msgid "Choose a block from the list to see it here."
+msgstr ""
+
+#: includes/class-canvas.php:224
+#: includes/class-canvas.php:255
+msgid "On its own"
+msgstr ""
+
+#: includes/class-canvas.php:228
+msgid "In a padded group"
+msgstr ""
+
+#: includes/class-canvas.php:232
+msgid "In two columns"
+msgstr ""
+
+#: includes/class-canvas.php:236
+msgid "In three columns"
+msgstr ""
+
+#: includes/class-canvas.php:240
+msgid "In a narrow sidebar"
+msgstr ""
+
+#: includes/class-catalog.php:353
+msgid "That block isn’t in the Parts Kit."
+msgstr ""
+
+#: includes/class-catalog.php:402
+msgid "Start a rebuild before sending blocks."
+msgstr ""
+
+#: includes/class-catalog.php:429
+msgid "No blocks were received, so the Parts Kit was left as it was."
+msgstr ""
+
+#: includes/class-catalog.php:512
+msgid "None of those blocks are in the Parts Kit. Rebuild it and try again."
+msgstr ""
+
+#: includes/class-catalog.php:520
+msgid "Kitchen Sink"
+msgstr ""
+
+#: includes/class-explorer.php:45
+msgid "Parts Kit Explorer"
+msgstr ""
+
+#: includes/class-explorer.php:72
+msgid "The Parts Kit needs JavaScript."
+msgstr ""
+
+#: includes/class-explorer.php:192
+msgid "Mobile"
+msgstr ""
+
+#: includes/class-explorer.php:197
+msgid "Tablet"
+msgstr ""
+
+#: includes/class-explorer.php:202
+msgid "Desktop"
+msgstr ""
+
+#: includes/class-explorer.php:207
+msgid "Fill"
+msgstr ""
+
+#: includes/class-explorer.php:306
+#: includes/class-post-type.php:80
+msgid "QA Pages"
+msgstr ""
+
+#: includes/class-github-plugin-updater.php:237
+msgid "Latest version from GitHub"
+msgstr ""
+
+#: includes/class-github-plugin-updater.php:385
+msgid "No changelog available."
+msgstr ""
+
+#: includes/class-post-type.php:78
+msgid "Parts Kit Page"
+msgstr ""
+
+#: includes/class-post-type.php:81
+#: includes/class-post-type.php:82
+msgid "Add QA Page"
+msgstr ""
+
+#: includes/class-post-type.php:83
+msgid "Edit QA Page"
+msgstr ""
+
+#: includes/class-post-type.php:84
+msgid "New QA Page"
+msgstr ""
+
+#: includes/class-post-type.php:85
+msgid "View in Parts Kit"
+msgstr ""
+
+#: includes/class-post-type.php:87
+msgid "Search QA pages"
+msgstr ""
+
+#: includes/class-post-type.php:88
+msgid "No QA pages yet. Add one to demo a kitchen sink or a specific block setup."
+msgstr ""
+
+#: includes/class-post-type.php:89
+msgid "No QA pages in the trash."
+msgstr ""
+
+#: includes/class-post-type.php:90
+msgid "Parent page:"
+msgstr ""
+
+#: includes/class-post-type.php:92
+msgid "QA pages, kitchen sinks and block demos shown in the Parts Kit."
+msgstr ""
+
+#: includes/class-post-type.php:235
+#: build/block-index.js:4
+#: build/block-index.js:9
+#: build/block-index.js:11
+#: build/block-index.js:17
+msgid "(no title)"
+msgstr ""
+
+#. translators: %1$s: block title.
+#: includes/class-sample-data.php:150
+#, php-format
+msgid "This is the %1$s block. The sentence runs long enough to wrap, so you can check line height, measure and spacing against the rest of the design."
+msgstr ""
+
+#. translators: 1: block title, 2: variant, e.g. "Style: Outline".
+#: includes/class-sample-data.php:152
+#, php-format
+msgid "This is the %1$s block (%2$s). The sentence runs long enough to wrap, so you can check line height, measure and spacing against the rest of the design."
+msgstr ""
+
+#. translators: %1$s: variant or block title.
+#: includes/class-sample-data.php:154
+#, php-format
+msgid "A heading in %1$s"
+msgstr ""
+
+#: includes/class-sample-data.php:155
+msgid "A sample heading for review"
+msgstr ""
+
+#: includes/class-sample-data.php:156
+msgid "Button label"
+msgstr ""
+
+#: includes/class-sample-data.php:157
+msgid "A Person, Their Title"
+msgstr ""
+
+#: includes/class-sample-data.php:158
+msgid "Body copy that sits next to the block, so you can see how it relates to ordinary text and how it wraps when floated."
+msgstr ""
+
+#: includes/class-sample-data.php:259
+#: build/generator.js:2
+#: build/generator.js:3
+msgid "Placeholder image"
+msgstr ""
+
+#. translators: 1: width, 2: height.
+#: includes/class-sample-data.php:265
+#, php-format
+msgid "Placeholder image, %1$d by %2$d"
+msgstr ""
+
+#: includes/class-sample-data.php:268
+#: includes/class-sample-data.php:363
+msgid "A caption describing the image."
+msgstr ""
+
+#. translators: %s: block title.
+#: includes/class-sample-data.php:490
+#, php-format
+msgid "A headline for the %s block"
+msgstr ""
+
+#: includes/class-sample-data.php:493
+msgid "Label"
+msgstr ""
+
+#. translators: %s: field label.
+#: includes/class-sample-data.php:499
+#, php-format
+msgid "Sample %s"
+msgstr ""
+
+#. translators: %s: field label.
+#: includes/class-sample-data.php:499
+msgid "text"
+msgstr ""
+
+#. translators: 1: field label, 2: block title.
+#: includes/class-sample-data.php:503
+#, php-format
+msgid "This is sample %1$s text for the %2$s block. It runs long enough to show how two or three lines wrap at this width."
+msgstr ""
+
+#. translators: 1: field label, 2: block title.
+#: includes/class-sample-data.php:503
+msgid "body"
+msgstr ""
+
+#. translators: %s: block title.
+#: includes/class-sample-data.php:507
+#, php-format
+msgid "Rich text inside the %s block, with a sentence of realistic length so you can check line height and measure."
+msgstr ""
+
+#. translators: %s: block title.
+#: includes/class-sample-data.php:507
+msgid "A first list item"
+msgstr ""
+
+#. translators: %s: block title.
+#: includes/class-sample-data.php:507
+msgid "A second list item"
+msgstr ""
+
+#: includes/class-sample-data.php:524
+msgid "Learn more"
+msgstr ""
+
+#: includes/class-settings.php:176
+msgid "Anyone logged in"
+msgstr ""
+
+#: includes/class-settings.php:177
+msgid "Contributors and up"
+msgstr ""
+
+#: includes/class-settings.php:178
+msgid "Editors and up"
+msgstr ""
+
+#: includes/class-settings.php:179
+msgid "Administrators only"
+msgstr ""
+
+#: views/admin/block-index.php:15
+#: build/block-index.js:22
+msgid "Loading the Block Index…"
+msgstr ""
+
+#: views/admin/settings.php:27
+msgid "Who can view"
+msgstr ""
+
+#: views/admin/settings.php:32
+msgid "Logged-in users with this role or higher:"
+msgstr ""
+
+#: views/admin/settings.php:34
+msgid "Minimum role"
+msgstr ""
+
+#: views/admin/settings.php:42
+msgid "Anyone with the link"
+msgstr ""
+
+#: views/admin/settings.php:44
+msgid "Public is handy for client review on staging. Parts Kit pages are always kept out of search engines and sitemaps."
+msgstr ""
+
+#: views/admin/settings.php:49
+msgid "Leave out blocks"
+msgstr ""
+
+#: views/admin/settings.php:52
+msgid "One block name per line. These stay out of the Parts Kit even if they’re registered."
+msgstr ""
+
+#: views/admin/settings.php:56
+msgid "Placeholder images"
+msgstr ""
+
+#: views/admin/settings.php:59
+#: build/explorer.js:10
+msgid "Background"
+msgstr ""
+
+#: views/admin/settings.php:64
+msgid "Text"
+msgstr ""
+
+#. translators: %s: placehold.co link.
+#: views/admin/settings.php:71
+#, php-format
+msgid "Sample images come from %s. Rebuild the Parts Kit after changing these."
+msgstr ""
+
+#: build/block-index.js:1
+msgid "Core"
+msgstr ""
+
+#: build/block-index.js:1
+msgid "Theme"
+msgstr ""
+
+#: build/block-index.js:1
+msgid "Plugins"
+msgstr ""
+
+#: build/block-index.js:1
+msgid "Used in content but not registered"
+msgstr ""
+
+#: build/block-index.js:1
+msgid "Authors see an “unsupported block” notice and the frontend may render nothing."
+msgstr ""
+
+#: build/block-index.js:1
+msgid "Re-register the block, or replace it on the pages listed under Usage."
+msgstr ""
+
+#: build/block-index.js:1
+msgid "Not used in any content"
+msgstr ""
+
+#: build/block-index.js:1
+msgid "Fine before launch. After launch, it may be a candidate to remove or to show the client."
+msgstr ""
+
+#: build/block-index.js:1
+msgid "Only used in unpublished content"
+msgstr ""
+
+#: build/block-index.js:1
+msgid "No visitor sees this block yet, so it hasn’t been tested live."
+msgstr ""
+
+#. translators: %s: style class.
+#: build/block-index.js:2
+#, js-format
+msgid "Content uses is-style-%s, which isn’t registered"
+msgstr ""
+
+#: build/block-index.js:2
+msgid "The theme may still style it, but authors can’t pick it again from the Styles panel."
+msgstr ""
+
+#: build/block-index.js:2
+msgid "Register the style, or switch those blocks to a registered one."
+msgstr ""
+
+#. translators: %s: list of style labels.
+#: build/block-index.js:3
+#, js-format
+msgid "Styles never used: %s"
+msgstr ""
+
+#: build/block-index.js:3
+msgid "Worth checking they still look right, or whether they’re needed."
+msgstr ""
+
+#: build/block-index.js:3
+#: build/block-index.js:7
+msgid "In use"
+msgstr ""
+
+#: build/block-index.js:3
+#: build/block-index.js:7
+msgid "Unused"
+msgstr ""
+
+#: build/block-index.js:3
+#: build/block-index.js:7
+msgid "Not registered"
+msgstr ""
+
+#: build/block-index.js:3
+msgid "Block origin"
+msgstr ""
+
+#. translators: 1: number of top-level blocks, 2: list of blocks.
+#: build/block-index.js:4
+#, js-format
+msgid "%1$d top-level blocks: %2$s"
+msgstr ""
+
+#: build/block-index.js:4
+msgid "Classic content"
+msgstr ""
+
+#: build/block-index.js:4
+msgid "Empty"
+msgstr ""
+
+#: build/block-index.js:4
+#: build/explorer.js:11
+msgid "Edit"
+msgstr ""
+
+#: build/block-index.js:4
+msgid "View"
+msgstr ""
+
+#: build/block-index.js:4
+#: build/block-index.js:10
+msgid "Fix"
+msgstr ""
+
+#: build/block-index.js:4
+#: build/block-index.js:10
+msgid "Review"
+msgstr ""
+
+#: build/block-index.js:4
+#: build/block-index.js:10
+msgid "Consider"
+msgstr ""
+
+#: build/block-index.js:4
+#: build/block-index.js:10
+msgid "Note"
+msgstr ""
+
+#: build/block-index.js:4
+#: build/block-index.js:9
+msgid "Title"
+msgstr ""
+
+#: build/block-index.js:4
+#: build/block-index.js:5
+#: build/block-index.js:9
+msgid "Type"
+msgstr ""
+
+#: build/block-index.js:4
+#: build/block-index.js:8
+#: build/block-index.js:22
+msgid "Status"
+msgstr ""
+
+#: build/block-index.js:4
+msgid "Times"
+msgstr ""
+
+#: build/block-index.js:4
+msgid "Links"
+msgstr ""
+
+#. translators: %s: number of hidden pages.
+#: build/block-index.js:5
+#, js-format
+msgid "Show %s more"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Not in any scanned content."
+msgstr ""
+
+#: build/block-index.js:5
+#: build/block-index.js:19
+msgid "never"
+msgstr ""
+
+#: build/block-index.js:5
+#: build/block-index.js:7
+#: build/block-index.js:19
+#: build/explorer.js:9
+msgid "Styles"
+msgstr ""
+
+#: build/block-index.js:5
+#: build/block-index.js:19
+msgid "not registered"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "The default style isn’t marked in content, so its uses aren’t counted."
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Alignments"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "This block has no registered styles, and content doesn’t set an alignment on it."
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Yes"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "No"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Reading the block’s registration…"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Defined in"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Registered in code, no block.json found"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "API version"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Rendering"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Dynamic, rendered on the server"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Static, markup saved in content"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Text domain"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Keywords"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Only inside"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Allows inside"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Provides context"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Uses context"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Attributes"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Name"
+msgstr ""
+
+#: build/block-index.js:5
+#: build/generator.js:6
+msgid "Default"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Source"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Allowed values"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "block comment"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "No attributes."
+msgstr ""
+
+#: build/block-index.js:5
+#: build/explorer.js:9
+msgid "Supports"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "No supports declared, so the block gets none of the editor’s design tools."
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Variations"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "default"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "ACF fields"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "required"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "Assets"
+msgstr ""
+
+#: build/block-index.js:5
+msgid "block.json source"
+msgstr ""
+
+#: build/block-index.js:5
+#: build/explorer.js:9
+msgid "Copied"
+msgstr ""
+
+#: build/block-index.js:5
+#: build/explorer.js:9
+msgid "Copy"
+msgstr ""
+
+#. translators: %d: number of findings.
+#: build/block-index.js:6
+#, js-format
+msgid "%d thing to look at"
+msgid_plural "%d things to look at"
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/block-index.js:6
+msgid "No problems found"
+msgstr ""
+
+#: build/block-index.js:6
+msgid "Render check"
+msgstr ""
+
+#: build/block-index.js:6
+msgid "Rendering a sample on the server…"
+msgstr ""
+
+#: build/block-index.js:6
+msgid "Renders cleanly"
+msgstr ""
+
+#. translators: 1: sample source, 2: milliseconds, 3: bytes.
+#: build/block-index.js:7
+#, js-format
+msgid "Rendered %1$s in %2$d ms, %3$s bytes of markup."
+msgstr ""
+
+#: build/block-index.js:7
+msgid "the Parts Kit sample"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "the block with no content"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "How to fix:"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "Checking block.json, ACF wiring and rendering…"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "Usage"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "Spec"
+msgstr ""
+
+#: build/block-index.js:7
+#: build/block-index.js:8
+msgid "Audit"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "Open in Parts Kit"
+msgstr ""
+
+#: build/block-index.js:7
+#: build/explorer.js:9
+msgid "Block details"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "Search blocks"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "All"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "Origin"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "Any origin"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "Any audit result"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "Needs attention"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "Has any finding"
+msgstr ""
+
+#: build/block-index.js:7
+msgid "Include child and hidden blocks"
+msgstr ""
+
+#: build/block-index.js:7
+#: build/block-index.js:8
+msgid "Export CSV"
+msgstr ""
+
+#. translators: %s: number of blocks.
+#: build/block-index.js:8
+#, js-format
+msgid "%s block"
+msgid_plural "%s blocks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/block-index.js:8
+#: build/explorer.js:9
+msgid "Block"
+msgstr ""
+
+#: build/block-index.js:8
+msgid "Category"
+msgstr ""
+
+#: build/block-index.js:8
+msgid "Instances"
+msgstr ""
+
+#: build/block-index.js:8
+msgid "Pages"
+msgstr ""
+
+#: build/block-index.js:8
+msgid "Styles used"
+msgstr ""
+
+#: build/block-index.js:8
+msgid "Clean"
+msgstr ""
+
+#: build/block-index.js:8
+msgid "No blocks match. Clear the search or pick a different filter."
+msgstr ""
+
+#: build/block-index.js:8
+msgid "Search by title"
+msgstr ""
+
+#: build/block-index.js:8
+msgid "Contains block"
+msgstr ""
+
+#: build/block-index.js:8
+msgid "Contains any block"
+msgstr ""
+
+#. translators: %s: number of items.
+#: build/block-index.js:9
+#, js-format
+msgid "%s item"
+msgid_plural "%s items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/block-index.js:9
+#: build/block-index.js:19
+msgid "Blocks"
+msgstr ""
+
+#: build/block-index.js:9
+msgid "Unique"
+msgstr ""
+
+#: build/block-index.js:9
+msgid "Depth"
+msgstr ""
+
+#: build/block-index.js:9
+msgid "Page structure"
+msgstr ""
+
+#: build/block-index.js:9
+msgid "Blocks on this page"
+msgstr ""
+
+#: build/block-index.js:9
+msgid "From the theme’s files"
+msgstr ""
+
+#: build/block-index.js:9
+msgid "Customized in the Site Editor"
+msgstr ""
+
+#. translators: %s: remaining items.
+#: build/block-index.js:10
+#, js-format
+msgid "Show more (%s left)"
+msgstr ""
+
+#: build/block-index.js:10
+msgid "Nothing matches. Clear the search or the block filter."
+msgstr ""
+
+#. translators: %s: page count.
+#: build/block-index.js:11
+#, js-format
+msgid "%s page"
+msgid_plural "%s pages"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: number of further items.
+#: build/block-index.js:12
+#, js-format
+msgid "And %s more. Export the Content tab to see them all."
+msgstr ""
+
+#: build/block-index.js:12
+msgid "Nothing needs attention with these filters. Every block in use is registered, and no page stands out."
+msgstr ""
+
+#. translators: %d: number of blocks folded together.
+#: build/block-index.js:13
+#, js-format
+msgid "%d other block"
+msgid_plural "%d other blocks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/block-index.js:13
+msgid "Block usage, sized by number of instances"
+msgstr ""
+
+#. translators: 1: block title, 2: instance count.
+#: build/block-index.js:14
+#, js-format
+msgid "%1$s, %2$s instances"
+msgstr ""
+
+#. translators: 1: instance count, 2: percent share.
+#: build/block-index.js:15
+#, js-format
+msgid "%1$s instances, %2$s%% of the total"
+msgstr ""
+
+#. translators: %s: page count.
+#: build/block-index.js:16
+#, js-format
+msgid "On %s page"
+msgid_plural "On %s pages"
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/block-index.js:16
+msgid "No blocks match these filters."
+msgstr ""
+
+#. translators: 1: instance count, 2: item count.
+#: build/block-index.js:17
+#, js-format
+msgid "%1$s blocks across %2$s items"
+msgstr ""
+
+#: build/block-index.js:17
+msgid "registered blocks in use"
+msgstr ""
+
+#: build/block-index.js:17
+msgid "block instances"
+msgstr ""
+
+#: build/block-index.js:17
+msgid "pages, posts and templates scanned"
+msgstr ""
+
+#: build/block-index.js:17
+msgid "insertable blocks never used"
+msgstr ""
+
+#: build/block-index.js:17
+msgid "used but not registered"
+msgstr ""
+
+#: build/block-index.js:17
+msgid "things worth a look"
+msgstr ""
+
+#: build/block-index.js:17
+msgid "What the site is built from"
+msgstr ""
+
+#: build/block-index.js:17
+msgid "Each tile is a block, sized by how many times it appears. Select one to see where."
+msgstr ""
+
+#: build/block-index.js:17
+msgid "Blocks by content type"
+msgstr ""
+
+#: build/block-index.js:17
+msgid "Largest pages"
+msgstr ""
+
+#: build/block-index.js:17
+msgid "Top-level blocks in order. Hover a segment to name it."
+msgstr ""
+
+#. translators: 1: block count, 2: nesting depth.
+#: build/block-index.js:18
+#, js-format
+msgid "%1$s blocks, %2$s deep"
+msgstr ""
+
+#. translators: %d: position.
+#: build/block-index.js:19
+#, js-format
+msgid "Block %d on the page"
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Each block’s registered styles, with how often content uses them. Styles never used may not need maintaining; styles used but no longer registered can’t be picked again by authors."
+msgstr ""
+
+#: build/block-index.js:19
+msgid "No block styles are registered or used."
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Overview"
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Content"
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Health"
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Blocks used in content but no longer registered"
+msgstr ""
+
+#: build/block-index.js:19
+msgid "These show as “unsupported block” in the editor and may render nothing. Re-register them, or replace them in the listed pages."
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Style classes with no registered style"
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Content carries an is-style-* class the editor no longer offers. The theme may still style it, but authors can’t pick it again."
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Content with no blocks"
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Classic-editor content renders through the Classic block. Convert it to blocks to get theme styles and block features."
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Very large or deeply nested pages"
+msgstr ""
+
+#: build/block-index.js:19
+msgid "More than 200 blocks or more than 8 levels deep. These get slow to edit and are easy to break."
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Custom HTML blocks"
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Raw HTML skips theme styles and accessibility checks. Worth reviewing whether a real block fits."
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Theme blocks nobody has used yet"
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Built for this site but not in any content. Fine before launch; after launch, they may be candidates to remove."
+msgstr ""
+
+#: build/block-index.js:19
+msgid "Synced patterns not placed anywhere"
+msgstr ""
+
+#: build/block-index.js:19
+msgid "These synced patterns exist but no content references them."
+msgstr ""
+
+#. translators: 1: processed, 2: total.
+#: build/block-index.js:20
+#, js-format
+msgid "Scanning %1$s of %2$s"
+msgstr ""
+
+#: build/block-index.js:20
+msgid "Scanning…"
+msgstr ""
+
+#. translators: %s: date and time.
+#: build/block-index.js:21
+#, js-format
+msgid "Scanned %s."
+msgstr ""
+
+#. translators: %s: number of changed items.
+#: build/block-index.js:22
+#, js-format
+msgid "%s item changed since."
+msgid_plural "%s items changed since."
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/block-index.js:22
+msgid "Refresh"
+msgstr ""
+
+#: build/block-index.js:22
+msgid "Rescan everything"
+msgstr ""
+
+#: build/block-index.js:22
+msgid "Block Index sections"
+msgstr ""
+
+#: build/block-index.js:22
+msgid "Content type"
+msgstr ""
+
+#: build/block-index.js:22
+msgid "All content types"
+msgstr ""
+
+#: build/block-index.js:22
+msgid "Any status"
+msgstr ""
+
+#: build/block-index.js:22
+msgid "Include templates"
+msgstr ""
+
+#: build/canvas.js:1
+msgid "Links don’t navigate inside the Parts Kit."
+msgstr ""
+
+#: build/canvas.js:1
+msgid "Forms don’t submit inside the Parts Kit."
+msgstr ""
+
+#: build/explorer.js:1
+msgid "just now"
+msgstr ""
+
+#. translators: %d: minutes.
+#: build/explorer.js:2
+#, js-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: hours.
+#: build/explorer.js:3
+#, js-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: days.
+#: build/explorer.js:4
+#, js-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/explorer.js:4
+msgid "Find a block"
+msgstr ""
+
+#: build/explorer.js:4
+msgid "Clear search"
+msgstr ""
+
+#. translators: %d: result count.
+#: build/explorer.js:5
+#, js-format
+msgid "%d match"
+msgid_plural "%d matches"
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/explorer.js:5
+msgid "No blocks match. Try a block name like “button” or a keyword."
+msgstr ""
+
+#: build/explorer.js:5
+#: build/explorer.js:7
+msgid "QA pages"
+msgstr ""
+
+#: build/explorer.js:5
+msgid "Add a QA page"
+msgstr ""
+
+#. translators: %d: number of blocks.
+#: build/explorer.js:6
+#, js-format
+msgid "%d block, rendered with this site’s styles"
+msgid_plural "%d blocks, rendered with this site’s styles"
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/explorer.js:6
+msgid "Each block shows its default sample, every registered style, and each alignment it supports. Change the viewport, background and surrounding layout from the toolbar to check how it holds up."
+msgstr ""
+
+#. translators: %s: relative time.
+#: build/explorer.js:7
+#, js-format
+msgid "Built %s."
+msgstr ""
+
+#: build/explorer.js:7
+msgid "Rebuilding…"
+msgstr ""
+
+#: build/explorer.js:7
+msgid "Rebuild now"
+msgstr ""
+
+#. translators: %d: number of top-level blocks.
+#: build/explorer.js:8
+#, js-format
+msgid "%d block"
+msgid_plural "%d blocks"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of samples.
+#: build/explorer.js:9
+#, js-format
+msgid "%d sample"
+msgid_plural "%d samples"
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/explorer.js:9
+msgid "The Parts Kit hasn’t been built yet"
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Building opens the block editor in the background, collects every registered block with its styles and variations, and saves a sample of each. It takes a few seconds."
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Building…"
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Build the Parts Kit"
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Ask a site administrator to open the Parts Kit once. It builds itself the first time they do."
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Details"
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Close details"
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Samples"
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Block markup"
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Your browser blocked copying. Select the markup and copy it instead."
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Loading markup…"
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Paste into the code editor of any page to reuse this sample."
+msgstr ""
+
+#: build/explorer.js:9
+msgid "Rendering…"
+msgstr ""
+
+#. translators: %s: block or page title.
+#: build/explorer.js:10
+#, js-format
+msgid "Preview of %s"
+msgstr ""
+
+#: build/explorer.js:10
+msgid "Resize preview"
+msgstr ""
+
+#: build/explorer.js:10
+msgid "No background"
+msgstr ""
+
+#: build/explorer.js:10
+msgid "Show samples on"
+msgstr ""
+
+#: build/explorer.js:10
+msgid "Page default"
+msgstr ""
+
+#: build/explorer.js:10
+msgid "Show block list"
+msgstr ""
+
+#: build/explorer.js:10
+msgid "Viewport"
+msgstr ""
+
+#. translators: 1: viewport name, 2: width in pixels.
+#: build/explorer.js:11
+#, js-format
+msgid "%1$s, %2$dpx"
+msgstr ""
+
+#: build/explorer.js:11
+msgid "Layout"
+msgstr ""
+
+#: build/explorer.js:11
+msgid "Sample labels"
+msgstr ""
+
+#: build/explorer.js:11
+msgid "Details and markup"
+msgstr ""
+
+#: build/explorer.js:11
+msgid "Start a QA page from these samples"
+msgstr ""
+
+#: build/explorer.js:11
+msgid "Edit this page"
+msgstr ""
+
+#: build/explorer.js:11
+msgid "Open the preview in a new tab"
+msgstr ""
+
+#: build/explorer.js:11
+msgid "Blocks changed since the last build. Rebuilding…"
+msgstr ""
+
+#. translators: %d: number of blocks.
+#: build/explorer.js:12
+#, js-format
+msgid "Rebuilt %d blocks. Reloading…"
+msgstr ""
+
+#. translators: 1: done, 2: total.
+#: build/explorer.js:13
+#, js-format
+msgid "Rebuilding the Parts Kit: %1$d of %2$d"
+msgstr ""
+
+#: build/explorer.js:13
+msgid "Close block list"
+msgstr ""
+
+#. translators: %s: block title.
+#: build/explorer.js:14
+#, js-format
+msgid "%s QA"
+msgstr ""
+
+#: build/explorer.js:14
+msgid "Parts Kit builder"
+msgstr ""
+
+#: build/generator.js:1
+msgid "A first list item with enough words to wrap onto a second line at narrow widths"
+msgstr ""
+
+#: build/generator.js:1
+msgid "A second, shorter item"
+msgstr ""
+
+#: build/generator.js:1
+msgid "A third item"
+msgstr ""
+
+#: build/generator.js:1
+msgid "A nested item"
+msgstr ""
+
+#. translators: %s: variant or block title.
+#: build/generator.js:2
+#, js-format
+msgid "A pull quote pulls a key line out of the story, like this one in %s."
+msgstr ""
+
+#: build/generator.js:2
+msgid "Primary action"
+msgstr ""
+
+#: build/generator.js:2
+msgid "Secondary action"
+msgstr ""
+
+#. translators: %s: sample description.
+#: build/generator.js:3
+#, js-format
+msgid "Caption for %s"
+msgstr ""
+
+#: build/generator.js:3
+msgid "Text over an image, checked for contrast and spacing."
+msgstr ""
+
+#: build/generator.js:3
+msgid "First column"
+msgstr ""
+
+#: build/generator.js:3
+msgid "Second column"
+msgstr ""
+
+#. translators: %d: item number.
+#: build/generator.js:4
+#, js-format
+msgid "Item %d"
+msgstr ""
+
+#. translators: %s: sample description.
+#: build/generator.js:5
+#, js-format
+msgid "%s (select to expand)"
+msgstr ""
+
+#: build/generator.js:5
+msgid "Plan"
+msgstr ""
+
+#: build/generator.js:5
+msgid "Seats"
+msgstr ""
+
+#: build/generator.js:5
+msgid "Price"
+msgstr ""
+
+#: build/generator.js:5
+msgid "Unlimited"
+msgstr ""
+
+#: build/generator.js:5
+msgid "Preformatted text keeps its spacing"
+msgstr ""
+
+#: build/generator.js:5
+msgid "and its line breaks."
+msgstr ""
+
+#: build/generator.js:5
+msgid "Verse keeps the line breaks"
+msgstr ""
+
+#: build/generator.js:5
+msgid "that poetry and lyrics need."
+msgstr ""
+
+#: build/generator.js:5
+msgid "output from a Custom HTML block."
+msgstr ""
+
+#: build/generator.js:5
+msgid "Download"
+msgstr ""
+
+#: build/generator.js:5
+msgid "Left"
+msgstr ""
+
+#: build/generator.js:5
+msgid "Center"
+msgstr ""
+
+#: build/generator.js:5
+msgid "Right"
+msgstr ""
+
+#: build/generator.js:5
+msgid "Wide"
+msgstr ""
+
+#: build/generator.js:5
+msgid "Full width"
+msgstr ""
+
+#: build/generator.js:5
+msgid "Space between"
+msgstr ""
+
+#. translators: %s: style label.
+#: build/generator.js:6
+#, js-format
+msgid "Default (%s)"
+msgstr ""
+
+#. translators: %s: style label.
+#: build/generator.js:7
+#, js-format
+msgid "Style: %s"
+msgstr ""
+
+#. translators: %d: heading level.
+#: build/generator.js:8
+#, js-format
+msgid "Level: H%d"
+msgstr ""
+
+#: build/generator.js:8
+msgid "Ordered"
+msgstr ""
+
+#. translators: %s: alignment.
+#: build/generator.js:9
+#, js-format
+msgid "Align: %s"
+msgstr ""
+
+#: build/generator.js:9
+msgid "Block default"
+msgstr ""
+
+#. translators: %s: alignment.
+#: build/generator.js:10
+#, js-format
+msgid "Text align: %s"
+msgstr ""
+
+#. translators: %s: justification.
+#: build/generator.js:11
+#, js-format
+msgid "Justify: %s"
+msgstr ""
+
+#: build/generator.js:11
+msgid "Demo"
+msgstr ""
+
+#: build/generator.js:11
+msgid "The Parts Kit wasn’t rebuilt"
+msgstr ""
+
+#: build/generator.js:11
+msgid "Try again"
+msgstr ""
+
+#: build/generator.js:11
+msgid "Back to the Parts Kit"
+msgstr ""
+
+#: build/generator.js:11
+msgid "Building the Parts Kit"
+msgstr ""
+
+#: build/generator.js:11
+msgid "Waiting for blocks to register…"
+msgstr ""
+
+#. translators: 1: block title, 2: current number, 3: total.
+#: build/generator.js:12
+#, js-format
+msgid "%1$s (%2$d of %3$d)"
+msgstr ""
+
+#. translators: %s: parent block title.
+#: build/generator.js:13
+#, js-format
+msgid "Inside %s"
+msgstr ""
+
+#: build/generator.js:13
+msgid "Saving the Parts Kit"
+msgstr ""
+
+#. translators: 1: saved count, 2: total.
+#: build/generator.js:14
+#, js-format
+msgid "Saved %1$d of %2$d blocks"
+msgstr ""
+
+#: build/generator.js:14
+msgid "The server didn’t accept the upload."
+msgstr ""
+
+#. translators: %d: number of blocks.
+#: build/generator.js:15
+#, js-format
+msgid "Built %d blocks"
+msgstr ""
+
+#: build/generator.js:15
+msgid "Opening the Parts Kit…"
+msgstr ""

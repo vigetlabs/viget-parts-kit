@@ -1,0 +1,1074 @@
+@use "../shared/tokens" as *;
+
+// The explorer is its own document, so it sets its own base.
+.vgtpk-explorer-body {
+	background: $mist;
+	color: $ink;
+	font-family: $font;
+	font-size: 14px;
+	line-height: 1.45;
+	margin: 0;
+	-webkit-font-smoothing: antialiased;
+
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	button,
+	input,
+	select {
+		color: inherit;
+		font: inherit;
+	}
+
+	:focus-visible {
+		outline: 2px solid $accent;
+		outline-offset: 2px;
+	}
+}
+
+.screen-reader-text {
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute !important;
+	white-space: nowrap;
+	width: 1px;
+}
+
+.vgtpk-app {
+	display: grid;
+	grid-template-columns: 288px minmax(0, 1fr);
+	height: 100vh;
+	height: 100dvh;
+	overflow: hidden;
+}
+
+// Sidebar ------------------------------------------------------------------
+
+.vgtpk-sidebar {
+	background: $base;
+	color: on-base(86%);
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+
+	&__header {
+		border-bottom: 1px solid on-base(8%);
+		padding: 18px 16px 14px;
+	}
+
+	&__scroll {
+		flex: 1;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		padding: 8px 8px 24px;
+		scrollbar-color: on-base(20%) transparent;
+		scrollbar-width: thin;
+	}
+
+	&__footer {
+		border-top: 1px solid on-base(8%);
+		padding: 10px 8px;
+
+		a {
+			align-items: center;
+			border-radius: 4px;
+			color: on-base(75%);
+			display: flex;
+			gap: 10px;
+			padding: 8px;
+			text-decoration: none;
+
+			&:hover {
+				background: on-base(6%);
+				color: $on-base;
+			}
+		}
+	}
+}
+
+.vgtpk-brand {
+	background: none;
+	border: 0;
+	cursor: pointer;
+	display: block;
+	margin: 0 0 14px;
+	padding: 0;
+	text-align: left;
+
+	&__site {
+		color: on-base(55%);
+		display: block;
+		font-size: 12px;
+		margin-bottom: 2px;
+	}
+
+	&__name {
+		color: $on-base;
+		display: block;
+		font-size: 22px;
+		font-weight: 650;
+		letter-spacing: -0.02em;
+		line-height: 1.1;
+	}
+
+	&:hover &__name {
+		color: $accent;
+	}
+}
+
+.vgtpk-search {
+	align-items: center;
+	background: on-base(7%);
+	border: 1px solid on-base(10%);
+	border-radius: 6px;
+	display: flex;
+	gap: 6px;
+	padding: 0 6px 0 10px;
+
+	&:focus-within {
+		border-color: $accent;
+	}
+
+	> svg {
+		flex: none;
+		opacity: 0.6;
+	}
+
+	input {
+		background: transparent;
+		border: 0;
+		color: $on-base;
+		flex: 1;
+		min-width: 0;
+		outline: none;
+		padding: 8px 0;
+
+		&::placeholder {
+			color: on-base(45%);
+		}
+
+		&::-webkit-search-cancel-button {
+			display: none;
+		}
+	}
+
+	&__key {
+		border: 1px solid on-base(20%);
+		border-radius: 3px;
+		color: on-base(50%);
+		font-family: $mono;
+		font-size: 11px;
+		line-height: 1;
+		padding: 3px 6px;
+	}
+
+	&__clear {
+		background: none;
+		border: 0;
+		color: on-base(60%);
+		cursor: pointer;
+		display: flex;
+		padding: 4px;
+	}
+}
+
+.vgtpk-nav {
+	margin-top: 10px;
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	&__heading {
+		align-items: center;
+		color: on-base(55%);
+		display: flex;
+		font-size: 12px;
+		font-weight: 600;
+		gap: 4px;
+		margin: 0;
+		padding: 6px 8px;
+		width: 100%;
+	}
+
+	&__toggle {
+		background: none;
+		border: 0;
+		border-radius: 4px;
+		cursor: pointer;
+		text-align: left;
+
+		svg {
+			transition: transform 0.15s;
+		}
+
+		&[aria-expanded="true"] svg {
+			transform: rotate(90deg);
+		}
+
+		&:hover {
+			color: $on-base;
+		}
+	}
+
+	&__count {
+		color: on-base(35%);
+		font-variant-numeric: tabular-nums;
+		font-weight: 400;
+		margin-left: auto;
+	}
+
+	&__item {
+		align-items: center;
+		background: none;
+		border: 0;
+		border-radius: 4px;
+		color: on-base(82%);
+		cursor: pointer;
+		display: flex;
+		gap: 10px;
+		padding: 6px 8px 6px calc(8px + var(--depth, 0) * 18px);
+		position: relative;
+		text-align: left;
+		text-decoration: none;
+		width: 100%;
+
+		&:hover {
+			background: on-base(6%);
+			color: $on-base;
+		}
+
+		&.is-active {
+			background: on-base(10%);
+			color: $on-base;
+
+			&::before {
+				background: $accent;
+				border-radius: 2px;
+				bottom: 6px;
+				content: "";
+				left: 0;
+				position: absolute;
+				top: 6px;
+				width: 3px;
+			}
+
+			.vgtpk-block-icon {
+				color: $accent;
+			}
+		}
+
+		&--add {
+			color: on-base(55%);
+		}
+	}
+
+	&__label {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		min-width: 0;
+	}
+
+	&__context,
+	&__status {
+		color: on-base(45%);
+		font-size: 12px;
+	}
+
+	&__status {
+		text-transform: capitalize;
+	}
+
+	&__empty {
+		color: on-base(60%);
+		padding: 8px;
+	}
+}
+
+.vgtpk-block-icon {
+	align-items: center;
+	color: on-base(70%);
+	display: inline-flex;
+	flex: none;
+	height: 20px;
+	justify-content: center;
+	width: 20px;
+
+	svg {
+		fill: currentcolor;
+		height: 20px;
+		width: 20px;
+	}
+
+	// Our chrome icons are stroked, not filled.
+	svg[stroke] {
+		fill: none;
+	}
+
+	&.dashicons {
+		font-size: 20px;
+	}
+
+	&--letter {
+		border: 1px solid currentcolor;
+		border-radius: 4px;
+		font-size: 11px;
+		font-weight: 700;
+		height: 18px;
+		width: 18px;
+	}
+}
+
+// Main ----------------------------------------------------------------------
+
+.vgtpk-main {
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	min-width: 0;
+}
+
+.vgtpk-toolbar {
+	align-items: center;
+	background: #fff;
+	border-bottom: 1px solid $line;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 16px;
+	min-height: 56px;
+	padding: 8px 16px;
+
+	&__title {
+		align-items: baseline;
+		display: flex;
+		flex: 1;
+		gap: 10px;
+		min-width: 12rem;
+
+		h1 {
+			color: $ink;
+			font-size: 18px;
+			font-weight: 650;
+			letter-spacing: -0.01em;
+			margin: 0;
+			white-space: nowrap;
+		}
+
+		code {
+			color: $slate;
+			font-family: $mono;
+			font-size: 12px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+
+	&__tools {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	&__divider {
+		background: $line;
+		height: 20px;
+		margin: 0 4px;
+		width: 1px;
+	}
+}
+
+.vgtpk-tool {
+	align-items: center;
+	background: #fff;
+	border: 1px solid transparent;
+	border-radius: 6px;
+	color: $ink;
+	cursor: pointer;
+	display: inline-flex;
+	gap: 6px;
+	height: 34px;
+	justify-content: center;
+	min-width: 34px;
+	padding: 0 8px;
+	text-decoration: none;
+
+	&:hover {
+		background: $mist;
+	}
+
+	&.is-pressed {
+		background: $primary-soft;
+		color: $primary;
+	}
+
+	&:disabled {
+		cursor: progress;
+		opacity: 0.5;
+	}
+
+	&__text {
+		font-size: 13px;
+		white-space: nowrap;
+	}
+
+	&--menu {
+		display: none;
+	}
+}
+
+.vgtpk-segmented {
+	background: $mist;
+	border-radius: 7px;
+	display: inline-flex;
+	padding: 2px;
+
+	button {
+		align-items: center;
+		background: none;
+		border: 0;
+		border-radius: 5px;
+		color: $slate;
+		cursor: pointer;
+		display: inline-flex;
+		height: 30px;
+		justify-content: center;
+		width: 34px;
+
+		&:hover {
+			color: $ink;
+		}
+
+		&.is-active {
+			background: #fff;
+			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+			color: $primary;
+		}
+	}
+}
+
+.vgtpk-select select {
+	appearance: none;
+	background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='m1 1 4 4 4-4' fill='none' stroke='%23757575' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 10px center;
+	border: 1px solid $line;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 13px;
+	height: 34px;
+	padding: 0 28px 0 10px;
+}
+
+.vgtpk-popover-wrap {
+	position: relative;
+}
+
+.vgtpk-popover {
+	background: #fff;
+	border: 1px solid $line;
+	border-radius: 8px;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+	padding: 12px;
+	position: absolute;
+	right: 0;
+	top: calc(100% + 6px);
+	width: 260px;
+	z-index: 20;
+
+	&__title {
+		color: $slate;
+		font-size: 12px;
+		margin: 0 0 8px;
+	}
+}
+
+.vgtpk-swatches {
+	display: grid;
+	gap: 2px;
+	max-height: 50vh;
+	overflow-y: auto;
+}
+
+.vgtpk-swatch {
+	border-radius: 50%;
+	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
+	display: inline-block;
+	flex: none;
+	height: 18px;
+	width: 18px;
+
+	&.is-none {
+		background: linear-gradient(135deg, #fff 45%, $error 45%, $error 55%, #fff 55%);
+	}
+}
+
+.vgtpk-swatch-button {
+	align-items: center;
+	background: none;
+	border: 0;
+	border-radius: 5px;
+	cursor: pointer;
+	display: flex;
+	font-size: 13px;
+	gap: 10px;
+	padding: 6px 8px;
+	text-align: left;
+
+	&:hover {
+		background: $mist;
+	}
+
+	&.is-active {
+		background: $primary-soft;
+		color: $primary;
+		font-weight: 600;
+	}
+}
+
+// Workspace -------------------------------------------------------------
+
+.vgtpk-workspace {
+	display: flex;
+	flex: 1;
+	min-height: 0;
+	position: relative;
+}
+
+.vgtpk-stage {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	min-width: 0;
+	overflow: auto;
+	padding: 0 24px 24px;
+
+	&__frame {
+		display: flex;
+		flex-direction: column;
+		max-width: 100%;
+		position: relative;
+		transition: width 0.2s ease-out;
+	}
+
+	&.is-resizing &__frame {
+		transition: none;
+	}
+
+	&__viewport {
+		background: #fff;
+		border-radius: 0 0 6px 6px;
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08);
+		flex: 1;
+		overflow: hidden;
+		position: relative;
+
+		iframe {
+			border: 0;
+			display: block;
+			height: 100%;
+			width: 100%;
+		}
+	}
+
+	&.is-resizing iframe {
+		pointer-events: none;
+	}
+
+	&__loading {
+		color: $slate;
+		font-size: 13px;
+		left: 50%;
+		position: absolute;
+		top: 24px;
+		transform: translateX(-50%);
+	}
+
+	&__handle {
+		cursor: ew-resize;
+		position: absolute;
+		right: -14px;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 12px;
+		height: 48px;
+
+		&::after {
+			background: $line;
+			border-radius: 3px;
+			content: "";
+			inset: 0 3px;
+			position: absolute;
+		}
+
+		&:hover::after,
+		&:focus-visible::after {
+			background: $accent;
+		}
+	}
+}
+
+// Ticks every 100px, a longer tick every 400px.
+.vgtpk-ruler {
+	background-image:
+		repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.35) 0 1px, transparent 1px 400px),
+		repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 100px);
+	background-position: left bottom;
+	background-repeat: repeat-x;
+	background-size: auto 10px, auto 5px;
+	flex: none;
+	height: 28px;
+	position: relative;
+
+	&__value {
+		background: $mist;
+		color: $primary;
+		font-size: 12px;
+		font-variant-numeric: tabular-nums;
+		font-weight: 600;
+		left: 50%;
+		padding: 0 8px;
+		position: absolute;
+		top: 4px;
+		transform: translateX(-50%);
+	}
+}
+
+// Info panel -----------------------------------------------------------
+
+.vgtpk-info {
+	background: #fff;
+	border-left: 1px solid $line;
+	display: flex;
+	flex: none;
+	flex-direction: column;
+	width: 380px;
+
+	&__header {
+		align-items: center;
+		border-bottom: 1px solid $line;
+		display: flex;
+		justify-content: space-between;
+		padding: 8px 8px 8px 16px;
+
+		h2 {
+			font-size: 14px;
+			margin: 0;
+		}
+	}
+
+	&__body {
+		flex: 1;
+		overflow-y: auto;
+		padding: 16px;
+	}
+
+	&__description {
+		color: $ink;
+		margin: 0 0 16px;
+	}
+
+	&__facts {
+		display: grid;
+		gap: 8px 12px;
+		grid-template-columns: max-content 1fr;
+		margin: 0 0 20px;
+
+		dt {
+			color: $slate;
+		}
+
+		dd {
+			margin: 0;
+		}
+
+		code {
+			font-family: $mono;
+			font-size: 12px;
+		}
+	}
+
+	&__subhead {
+		font-size: 13px;
+		font-weight: 650;
+		margin: 0 0 8px;
+	}
+
+	&__muted {
+		color: $slate;
+		font-size: 12px;
+	}
+
+	&__error {
+		color: $error;
+	}
+}
+
+.vgtpk-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+}
+
+.vgtpk-chip {
+	background: $mist;
+	border-radius: 3px;
+	font-size: 12px;
+	padding: 1px 6px;
+}
+
+.vgtpk-samples {
+	list-style: none;
+	margin: 0 0 20px;
+	padding: 0;
+
+	button {
+		background: none;
+		border: 0;
+		border-left: 2px solid $line;
+		cursor: pointer;
+		display: flex;
+		flex-direction: column;
+		padding: 5px 10px;
+		text-align: left;
+		width: 100%;
+
+		&:hover {
+			background: $paper;
+		}
+
+		&.is-active {
+			border-left-color: $accent;
+			color: $primary;
+			font-weight: 600;
+		}
+
+		small {
+			color: $slate;
+			font-family: $mono;
+			font-size: 11px;
+			font-weight: 400;
+		}
+	}
+}
+
+.vgtpk-markup {
+
+	&__bar {
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 8px;
+
+		.vgtpk-info__subhead {
+			margin: 0;
+		}
+	}
+
+	pre {
+		background: $base;
+		border-radius: 6px;
+		color: #e8f1f5;
+		font-family: $mono;
+		font-size: 12px;
+		line-height: 1.55;
+		margin: 0 0 8px;
+		max-height: 360px;
+		overflow: auto;
+		padding: 12px;
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+	}
+}
+
+// Home ----------------------------------------------------------------
+
+.vgtpk-home {
+	flex: 1;
+	overflow-y: auto;
+	padding: 40px clamp(16px, 4vw, 56px) 64px;
+
+	&__intro {
+		margin-bottom: 40px;
+		max-width: 42rem;
+
+		h2 {
+			color: $ink;
+			font-size: clamp(26px, 3vw, 34px);
+			font-weight: 650;
+			letter-spacing: -0.02em;
+			line-height: 1.15;
+			margin: 0 0 12px;
+		}
+
+		p {
+			font-size: 15px;
+			margin: 0 0 10px;
+		}
+	}
+
+	&__meta {
+		color: $slate;
+	}
+
+	&__group {
+		margin-bottom: 32px;
+
+		h3 {
+			border-bottom: 1px solid $line;
+			font-size: 14px;
+			margin: 0 0 12px;
+			padding-bottom: 8px;
+
+			span {
+				color: $slate;
+				font-weight: 400;
+			}
+		}
+	}
+
+	&__blocks,
+	&__pages {
+		display: grid;
+		gap: 6px;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		button {
+			align-items: center;
+			background: #fff;
+			border: 1px solid transparent;
+			border-radius: 6px;
+			cursor: pointer;
+			display: grid;
+			gap: 0 10px;
+			grid-template-columns: auto 1fr;
+			padding: 10px 12px;
+			text-align: left;
+			width: 100%;
+
+			&:hover {
+				border-color: $primary;
+			}
+
+			small {
+				color: $slate;
+				font-size: 12px;
+				grid-column: 2;
+			}
+		}
+
+		.vgtpk-block-icon {
+			color: $primary;
+			grid-row: span 2;
+		}
+	}
+
+	&__pages button {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		align-items: flex-start;
+
+		span {
+			color: $slate;
+			font-size: 12px;
+		}
+	}
+
+	&--empty {
+		max-width: 36rem;
+
+		h2 {
+			color: $primary;
+			font-size: 28px;
+			letter-spacing: -0.02em;
+			margin: 0 0 12px;
+		}
+
+		p {
+			font-size: 15px;
+		}
+	}
+}
+
+.vgtpk-button {
+	align-items: center;
+	background: $primary;
+	border: 0;
+	border-radius: 6px;
+	color: $on-primary;
+	cursor: pointer;
+	display: inline-flex;
+	font-weight: 600;
+	gap: 6px;
+	padding: 10px 16px;
+
+	&:hover {
+		background: $primary-strong;
+	}
+
+	&:disabled {
+		cursor: progress;
+		opacity: 0.6;
+	}
+
+	&--small {
+		font-size: 12px;
+		padding: 5px 10px;
+
+		svg {
+			height: 16px;
+			width: 16px;
+		}
+	}
+}
+
+.vgtpk-link {
+	background: none;
+	border: 0;
+	color: $primary-strong;
+	cursor: pointer;
+	padding: 0;
+	text-decoration: underline;
+}
+
+// Rebuild and toasts ----------------------------------------------------
+
+.vgtpk-rebuild {
+	background: $base;
+	border-radius: 8px;
+	bottom: 16px;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+	color: $on-base;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 12px 14px;
+	position: fixed;
+	right: 16px;
+	width: 300px;
+	z-index: 50;
+
+	&__text {
+		font-size: 13px;
+		font-variant-numeric: tabular-nums;
+	}
+
+	&__bar {
+		background: on-base(15%);
+		border-radius: 2px;
+		height: 3px;
+		overflow: hidden;
+
+		span {
+			background: $accent;
+			display: block;
+			height: 100%;
+			transition: width 0.2s;
+		}
+	}
+
+	// The editor needs a real viewport to boot, so move it off-screen.
+	&__frame {
+		border: 0;
+		height: 800px;
+		left: -10000px;
+		position: fixed;
+		top: 0;
+		width: 1200px;
+	}
+}
+
+.vgtpk-toast {
+	background: $error;
+	border-radius: 6px;
+	bottom: 16px;
+	color: #fff;
+	left: 50%;
+	max-width: calc(100vw - 32px);
+	padding: 10px 14px;
+	position: fixed;
+	transform: translateX(-50%);
+	z-index: 60;
+}
+
+.vgtpk-scrim {
+	display: none;
+}
+
+// Small screens: the sidebar becomes a drawer, details cover the stage.
+
+@media (max-width: 960px) {
+
+	.vgtpk-info {
+		bottom: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: min(380px, 100%);
+		z-index: 5;
+	}
+}
+
+@media (max-width: 782px) {
+
+	.vgtpk-app {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.vgtpk-sidebar {
+		bottom: 0;
+		left: 0;
+		position: fixed;
+		top: 0;
+		transform: translateX(-100%);
+		transition: transform 0.2s ease-out;
+		width: min(300px, 85vw);
+		z-index: 40;
+	}
+
+	.is-menu-open .vgtpk-sidebar {
+		transform: none;
+	}
+
+	.is-menu-open .vgtpk-scrim {
+		background: rgba(0, 0, 0, 0.5);
+		border: 0;
+		display: block;
+		inset: 0;
+		position: fixed;
+		z-index: 30;
+	}
+
+	.vgtpk-tool--menu {
+		display: inline-flex;
+	}
+
+	.vgtpk-stage {
+		padding: 0 8px 8px;
+	}
+
+	.vgtpk-stage__handle,
+	.vgtpk-tool__text {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.vgtpk-sidebar,
+	.vgtpk-stage__frame,
+	.vgtpk-nav__toggle svg,
+	.vgtpk-rebuild__bar span {
+		transition: none;
+	}
+}
