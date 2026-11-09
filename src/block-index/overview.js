@@ -5,7 +5,7 @@
 /**
  * WordPress dependencies
  */
-import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
+import { useEffect, useMemo, useState } from '@wordpress/element';
 import { __, _n, sprintf } from '@wordpress/i18n';
 
 /**
@@ -33,12 +33,12 @@ function Stat( { value, label, tone, onClick } ) {
 
 // Treemap of block instances, colored by origin.
 function Treemap( { blocks, onSelect } ) {
-	const ref = useRef();
+	// Callback ref, since the chart mounts after the first scan has blocks to show.
+	const [ node, setNode ] = useState( null );
 	const [ size, setSize ] = useState( { width: 0, height: 420 } );
 	const [ tip, show, hide ] = useTooltip();
 
 	useEffect( () => {
-		const node = ref.current;
 		if ( ! node || ! window.ResizeObserver ) {
 			return;
 		}
@@ -53,7 +53,7 @@ function Treemap( { blocks, onSelect } ) {
 		);
 		observer.observe( node );
 		return () => observer.disconnect();
-	}, [] );
+	}, [ node ] );
 
 	const items = useMemo( () => {
 		const used = blocks
@@ -107,7 +107,7 @@ function Treemap( { blocks, onSelect } ) {
 	return (
 		<div
 			className="vgtpk-treemap"
-			ref={ ref }
+			ref={ setNode }
 			style={ { height: size.height } }
 		>
 			<svg

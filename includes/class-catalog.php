@@ -185,6 +185,17 @@ class Catalog {
 	}
 
 	/**
+	 * Register the theme's block style partials (styles/*.json). Core only does it when theme data is read, which REST requests may skip.
+	 *
+	 * @return void
+	 */
+	public static function register_theme_block_styles(): void {
+		if ( wp_theme_has_theme_json() ) {
+			\WP_Theme_JSON_Resolver::get_theme_data();
+		}
+	}
+
+	/**
 	 * Fingerprint of everything that changes what the catalog would contain.
 	 *
 	 * Only computed on Parts Kit screens. JS-only block registrations can't be seen here,
@@ -194,6 +205,8 @@ class Catalog {
 	 */
 	public function current_hash(): string {
 		global $wp_version;
+
+		self::register_theme_block_styles();
 
 		$blocks = array_keys( WP_Block_Type_Registry::get_instance()->get_all_registered() );
 		sort( $blocks );

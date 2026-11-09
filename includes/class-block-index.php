@@ -219,6 +219,8 @@ class Block_Index {
 	 * @return array
 	 */
 	public function context(): array {
+		Catalog::register_theme_block_styles();
+
 		$registered = [];
 		$styles     = WP_Block_Styles_Registry::get_instance();
 		$audit      = new Block_Audit();
