@@ -89,7 +89,7 @@ class Admin {
 	}
 
 	/**
-	 * Stop the settings page for anyone who can't manage the Parts Kit.
+	 * Stop the settings page for anyone who can't manage the Parts Kit, and load its color pickers.
 	 *
 	 * @return void
 	 */
@@ -97,6 +97,15 @@ class Admin {
 		if ( ! Access::can_manage() ) {
 			wp_die( esc_html__( 'You don’t have access to the Parts Kit settings.', 'viget-parts-kit' ), '', [ 'response' => 403 ] );
 		}
+
+		add_action(
+			'admin_enqueue_scripts',
+			static function (): void {
+				wp_enqueue_style( 'wp-color-picker' );
+				wp_enqueue_script( 'wp-color-picker' );
+				wp_add_inline_script( 'wp-color-picker', 'jQuery( function ( $ ) { $( ".vgtpk-color" ).wpColorPicker(); } );' );
+			}
+		);
 	}
 
 	/**

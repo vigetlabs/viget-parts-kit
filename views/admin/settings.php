@@ -55,15 +55,14 @@ $option = Settings::OPTION_NAME;
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Placeholder images', 'viget-parts-kit' ); ?></th>
 				<td>
-					<label>
-						<?php esc_html_e( 'Background', 'viget-parts-kit' ); ?>
-						<input type="text" class="small-text code" maxlength="7" name="<?php echo esc_attr( $option ); ?>[placeholder_bg]" value="<?php echo esc_attr( '#' . $settings['placeholder_bg'] ); ?>">
-					</label>
-					&nbsp;
-					<label>
-						<?php esc_html_e( 'Text', 'viget-parts-kit' ); ?>
-						<input type="text" class="small-text code" maxlength="7" name="<?php echo esc_attr( $option ); ?>[placeholder_fg]" value="<?php echo esc_attr( '#' . $settings['placeholder_fg'] ); ?>">
-					</label>
+					<p>
+						<label for="vgtpk-placeholder-bg"><?php esc_html_e( 'Background', 'viget-parts-kit' ); ?></label><br>
+						<input type="text" id="vgtpk-placeholder-bg" class="vgtpk-color" name="<?php echo esc_attr( $option ); ?>[placeholder_bg]" value="<?php echo esc_attr( '#' . $settings['placeholder_bg'] ); ?>" data-default-color="<?php echo esc_attr( '#' . Settings::defaults()['placeholder_bg'] ); ?>">
+					</p>
+					<p>
+						<label for="vgtpk-placeholder-fg"><?php esc_html_e( 'Text', 'viget-parts-kit' ); ?></label><br>
+						<input type="text" id="vgtpk-placeholder-fg" class="vgtpk-color" name="<?php echo esc_attr( $option ); ?>[placeholder_fg]" value="<?php echo esc_attr( '#' . $settings['placeholder_fg'] ); ?>" data-default-color="<?php echo esc_attr( '#' . Settings::defaults()['placeholder_fg'] ); ?>">
+					</p>
 					<p class="description">
 						<?php
 						printf(

@@ -12,6 +12,7 @@ import { __, sprintf } from '@wordpress/i18n';
  * Internal dependencies
  */
 import {
+	ChevronIcon,
 	CodeIcon,
 	DesktopIcon,
 	ExternalIcon,
@@ -31,8 +32,8 @@ const VIEWPORT_ICONS = {
 	full: FullIcon,
 };
 
-// Background swatch picker.
-function Backgrounds( { palette, value, onChange } ) {
+// A toolbar button that opens a list of choices. Closes on a choice, Escape, or a click anywhere else.
+function Picker( { label, buttonLabel, swatch, options, value, onChange } ) {
 	const [ open, setOpen ] = useState( false );
 	const ref = useRef();
 
@@ -43,9 +44,10 @@ function Backgrounds( { palette, value, onChange } ) {
 
 		const close = ( event ) => {
 			if (
-				event.type === 'keydown'
+				event.type === 'blur' ||
+				( event.type === 'keydown'
 					? event.key === 'Escape'
-					: ! ref.current?.contains( event.target )
+					: ! ref.current?.contains( event.target ) )
 			) {
 				setOpen( false );
 			}
@@ -53,18 +55,15 @@ function Backgrounds( { palette, value, onChange } ) {
 
 		document.addEventListener( 'mousedown', close );
 		document.addEventListener( 'keydown', close );
+		// Clicks inside the preview iframe only blur this window.
+		window.addEventListener( 'blur', close );
 
 		return () => {
 			document.removeEventListener( 'mousedown', close );
 			document.removeEventListener( 'keydown', close );
+			window.removeEventListener( 'blur', close );
 		};
 	}, [ open ] );
-
-	if ( ! palette.length ) {
-		return null;
-	}
-
-	const current = palette.find( ( color ) => color.slug === value );
 
 	return (
 		<div className="vgtpk-popover-wrap" ref={ ref }>
@@ -74,58 +73,104 @@ function Backgrounds( { palette, value, onChange } ) {
 				aria-expanded={ open }
 				aria-haspopup="true"
 				onClick={ () => setOpen( ! open ) }
-				title={ __( 'Background', 'viget-parts-kit' ) }
+				data-tooltip={ label }
 			>
-				<span
-					className={ `vgtpk-swatch${ current ? '' : ' is-none' }` }
-					style={
-						current ? { background: current.color } : undefined
-					}
-				/>
-				<span className="vgtpk-tool__text">
-					{ current
-						? current.name
-						: __( 'No background', 'viget-parts-kit' ) }
-				</span>
+				{ swatch }
+				<span className="vgtpk-tool__text">{ buttonLabel }</span>
+				<ChevronIcon />
 			</button>
 			{ open && (
 				<div
 					className="vgtpk-popover"
 					role="group"
-					aria-label={ __( 'Background', 'viget-parts-kit' ) }
+					aria-label={ label }
 				>
-					<p className="vgtpk-popover__title">
-						{ __( 'Show samples on', 'viget-parts-kit' ) }
-					</p>
+					<p className="vgtpk-popover__title">{ label }</p>
 					<div className="vgtpk-swatches">
-						<button
-							type="button"
-							className={ `vgtpk-swatch-button${ ! value ? ' is-active' : '' }` }
-							onClick={ () => onChange( '' ) }
-							aria-pressed={ ! value }
-						>
-							<span className="vgtpk-swatch is-none" />
-							{ __( 'Page default', 'viget-parts-kit' ) }
-						</button>
-						{ palette.map( ( color ) => (
+						{ options.map( ( option ) => (
 							<button
 								type="button"
-								key={ color.slug }
-								className={ `vgtpk-swatch-button${ value === color.slug ? ' is-active' : '' }` }
-								onClick={ () => onChange( color.slug ) }
-								aria-pressed={ value === color.slug }
+								key={ option.value }
+								className={ `vgtpk-swatch-button${ value === option.value ? ' is-active' : '' }` }
+								onClick={ () => {
+									onChange( option.value );
+									setOpen( false );
+								} }
+								aria-pressed={ value === option.value }
 							>
-								<span
-									className="vgtpk-swatch"
-									style={ { background: color.color } }
-								/>
-								{ color.name }
+								{ option.swatch }
+								{ option.label }
 							</button>
 						) ) }
 					</div>
 				</div>
 			) }
 		</div>
+	);
+}
+
+const Swatch = ( { color } ) => (
+	<span
+		className={ `vgtpk-swatch${ color ? '' : ' is-none' }` }
+		style={ color ? { background: color } : undefined }
+	/>
+);
+
+// Background swatch picker.
+function Backgrounds( { palette, value, onChange } ) {
+	if ( ! palette.length ) {
+		return null;
+	}
+
+	const current = palette.find( ( color ) => color.slug === value );
+
+	return (
+		<Picker
+			label={ __( 'Background', 'viget-parts-kit' ) }
+			buttonLabel={
+				current
+					? current.name
+					: __( 'No background', 'viget-parts-kit' )
+			}
+			swatch={ <Swatch color={ current?.color } /> }
+			value={ value }
+			onChange={ onChange }
+			options={ [
+				{
+					value: '',
+					label: __( 'Page default', 'viget-parts-kit' ),
+					swatch: <Swatch />,
+				},
+				...palette.map( ( color ) => ( {
+					value: color.slug,
+					label: color.name,
+					swatch: <Swatch color={ color.color } />,
+				} ) ),
+			] }
+		/>
+	);
+}
+
+// Layout context picker.
+function Contexts( { contexts, value, onChange } ) {
+	const current =
+		contexts.find( ( context ) => context.slug === value ) || contexts[ 0 ];
+
+	return (
+		<Picker
+			label={ __( 'Container', 'viget-parts-kit' ) }
+			buttonLabel={ sprintf(
+				/* translators: %s: container name. */
+				__( 'Container: %s', 'viget-parts-kit' ),
+				current.label
+			) }
+			value={ current.slug }
+			onChange={ onChange }
+			options={ contexts.map( ( context ) => ( {
+				value: context.slug,
+				label: context.label,
+			} ) ) }
+		/>
 	);
 }
 
@@ -195,7 +240,7 @@ export default function Toolbar( {
 												width: null,
 											} )
 										}
-										title={
+										data-tooltip={
 											viewport.width
 												? sprintf(
 														/* translators: 1: viewport name, 2: width in pixels. */
@@ -228,30 +273,11 @@ export default function Toolbar( {
 					) }
 
 					{ current.type === 'item' && contexts.length > 1 && (
-						<label
-							htmlFor="vgtpk-toolbar-field-1"
-							className="vgtpk-select"
-						>
-							<span className="screen-reader-text">
-								{ __( 'Layout', 'viget-parts-kit' ) }
-							</span>
-							<select
-								id="vgtpk-toolbar-field-1"
-								value={ state.ctx }
-								onChange={ ( event ) =>
-									setState( { ctx: event.target.value } )
-								}
-							>
-								{ contexts.map( ( context ) => (
-									<option
-										key={ context.slug }
-										value={ context.slug }
-									>
-										{ context.label }
-									</option>
-								) ) }
-							</select>
-						</label>
+						<Contexts
+							contexts={ contexts }
+							value={ state.ctx }
+							onChange={ ( ctx ) => setState( { ctx } ) }
+						/>
 					) }
 
 					{ current.type === 'item' && features.labels && (
@@ -262,7 +288,10 @@ export default function Toolbar( {
 							onClick={ () =>
 								setState( { labels: ! state.labels } )
 							}
-							title={ __( 'Sample labels', 'viget-parts-kit' ) }
+							data-tooltip={ __(
+								'Sample labels',
+								'viget-parts-kit'
+							) }
 						>
 							<LabelIcon />
 							<span className="screen-reader-text">
@@ -279,7 +308,7 @@ export default function Toolbar( {
 							className={ `vgtpk-tool${ infoOpen ? ' is-pressed' : '' }` }
 							aria-pressed={ infoOpen }
 							onClick={ () => setInfoOpen( ! infoOpen ) }
-							title={ __(
+							data-tooltip={ __(
 								'Details and markup',
 								'viget-parts-kit'
 							) }
@@ -302,7 +331,7 @@ export default function Toolbar( {
 								className="vgtpk-tool"
 								onClick={ onCreatePage }
 								disabled={ creating }
-								title={ __(
+								data-tooltip={ __(
 									'Start a QA page from these samples',
 									'viget-parts-kit'
 								) }
@@ -321,7 +350,10 @@ export default function Toolbar( {
 						<a
 							className="vgtpk-tool"
 							href={ current.editUrl }
-							title={ __( 'Edit this page', 'viget-parts-kit' ) }
+							data-tooltip={ __(
+								'Edit this page',
+								'viget-parts-kit'
+							) }
 						>
 							<PencilIcon />
 							<span className="vgtpk-tool__text">
@@ -336,7 +368,7 @@ export default function Toolbar( {
 							href={ canvasUrl }
 							target="_blank"
 							rel="noreferrer"
-							title={ __(
+							data-tooltip={ __(
 								'Open the preview in a new tab',
 								'viget-parts-kit'
 							) }

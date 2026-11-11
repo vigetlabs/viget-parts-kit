@@ -157,6 +157,7 @@ class Explorer {
 				'pages'      => current_user_can( 'edit_pages' ) ? admin_url( 'edit.php?post_type=' . Post_Type::NAME ) : '',
 				'blockIndex' => Access::can_index() ? admin_url( 'edit.php?post_type=' . Post_Type::NAME . '&page=' . Block_Index::PAGE_SLUG ) : '',
 				'settings'   => $manage ? admin_url( 'edit.php?post_type=' . Post_Type::NAME . '&page=' . Settings::PAGE_SLUG ) : '',
+				'exit'       => current_user_can( 'edit_posts' ) ? admin_url() : home_url( '/' ),
 			],
 			'rest'       => [
 				'root'  => esc_url_raw( rest_url( Catalog::REST_NAMESPACE . '/' ) ),
@@ -218,6 +219,7 @@ class Explorer {
 			'createPage'   => true,
 			'openInNewTab' => true,
 			'blockIndex'   => true,
+			'childPages'   => false,
 			'autoRebuild'  => true,
 			'keyboard'     => true,
 			'defaults'     => [

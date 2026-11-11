@@ -28,6 +28,12 @@ export const SearchIcon = () => (
 	</Svg>
 );
 
+export const ExitIcon = () => (
+	<Svg size={ 16 }>
+		<path d="M8 4H4.5v12H8M12 6.5 15.5 10 12 13.5M15.5 10H7.5" />
+	</Svg>
+);
+
 export const ChevronIcon = () => (
 	<Svg size={ 16 }>
 		<path d="m7 5 5 5-5 5" />

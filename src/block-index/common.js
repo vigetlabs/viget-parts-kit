@@ -177,7 +177,8 @@ export function SortHeader( {
 	const active = sort.column === column;
 	const next = active && sort.direction === 'desc' ? 'asc' : 'desc';
 	const defaultDirection = numeric ? 'desc' : 'asc';
-	const arrow = sort.direction === 'asc' ? '↑' : '↓';
+	// Down for the column's natural order: A to Z, or most to least.
+	const arrow = sort.direction === defaultDirection ? '↓' : '↑';
 
 	return (
 		<th

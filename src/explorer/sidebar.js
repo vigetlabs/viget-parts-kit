@@ -13,6 +13,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
  */
 import {
 	ChevronIcon,
+	ExitIcon,
 	IndexIcon,
 	PageIcon,
 	PlusIcon,
@@ -126,18 +127,26 @@ export default function Sidebar( {
 			aria-label={ __( 'Parts Kit', 'viget-parts-kit' ) }
 		>
 			<header className="vgtpk-sidebar__header">
-				<button
-					type="button"
-					className="vgtpk-brand"
-					onClick={ onHome }
-				>
-					<span className="vgtpk-brand__site">
-						{ data.site.name }
-					</span>
-					<span className="vgtpk-brand__name">
-						{ __( 'Parts Kit', 'viget-parts-kit' ) }
-					</span>
-				</button>
+				<div className="vgtpk-sidebar__top">
+					<button
+						type="button"
+						className="vgtpk-brand"
+						onClick={ onHome }
+					>
+						<span className="vgtpk-brand__site">
+							{ data.site.name }
+						</span>
+						<span className="vgtpk-brand__name">
+							{ __( 'Parts Kit', 'viget-parts-kit' ) }
+						</span>
+					</button>
+					{ data.urls.exit && (
+						<a className="vgtpk-exit" href={ data.urls.exit }>
+							<ExitIcon />
+							{ __( 'Exit', 'viget-parts-kit' ) }
+						</a>
+					) }
+				</div>
 
 				{ data.features.search && (
 					<div className="vgtpk-search">

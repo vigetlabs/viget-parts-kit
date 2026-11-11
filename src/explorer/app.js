@@ -24,16 +24,33 @@ import Stage from './stage';
 import Toolbar from './toolbar';
 import { flatten, readUrl, request, writeUrl } from './utils';
 
-const COLLAPSED_KEY = 'vgtpk-collapsed';
+const COLLAPSED_KEY = 'vgtpk-collapsed-v2';
+// Core inserter categories start collapsed, so QA pages and the theme's own blocks lead.
+const CORE_CATEGORIES = [
+	'text',
+	'media',
+	'design',
+	'widgets',
+	'theme',
+	'embed',
+	'reusable',
+];
 const AUTO_REBUILD_KEY = 'vgtpk-auto-rebuild';
 const REBUILD_TIMEOUT = 60000;
 
-const readCollapsed = () => {
+const readCollapsed = ( nav ) => {
 	try {
-		return JSON.parse( window.localStorage.getItem( COLLAPSED_KEY ) ) || [];
-	} catch {
-		return [];
-	}
+		const saved = JSON.parse(
+			window.localStorage.getItem( COLLAPSED_KEY )
+		);
+		if ( Array.isArray( saved ) ) {
+			return saved;
+		}
+	} catch {}
+
+	return nav
+		.map( ( category ) => category.slug )
+		.filter( ( slug ) => CORE_CATEGORIES.includes( slug ) );
 };
 
 export default function App( { data } ) {
@@ -52,7 +69,9 @@ export default function App( { data } ) {
 		return initial;
 	} );
 	const [ query, setQuery ] = useState( '' );
-	const [ collapsed, setCollapsed ] = useState( readCollapsed );
+	const [ collapsed, setCollapsed ] = useState( () =>
+		readCollapsed( data.nav )
+	);
 	const [ infoOpen, setInfoOpen ] = useState( false );
 	const [ menuOpen, setMenuOpen ] = useState( false );
 	const [ focused, setFocused ] = useState( '' );
@@ -131,15 +150,6 @@ export default function App( { data } ) {
 	}, [ state ] );
 
 	useEffect( () => {
-		try {
-			window.localStorage.setItem(
-				COLLAPSED_KEY,
-				JSON.stringify( collapsed )
-			);
-		} catch {}
-	}, [ collapsed ] );
-
-	useEffect( () => {
 		document.title = current
 			? `${ current.title } – ${ __( 'Parts Kit', 'viget-parts-kit' ) }`
 			: `${ __( 'Parts Kit', 'viget-parts-kit' ) } – ${ data.site.name }`;
@@ -184,12 +194,22 @@ export default function App( { data } ) {
 		setMenuOpen( false );
 	};
 
+	// Saved only when someone toggles, so the defaults keep up with new categories until then.
 	const toggleCategory = ( slug ) =>
-		setCollapsed( ( prev ) =>
-			prev.includes( slug )
+		setCollapsed( ( prev ) => {
+			const next = prev.includes( slug )
 				? prev.filter( ( s ) => s !== slug )
-				: [ ...prev, slug ]
-		);
+				: [ ...prev, slug ];
+
+			try {
+				window.localStorage.setItem(
+					COLLAPSED_KEY,
+					JSON.stringify( next )
+				);
+			} catch {}
+
+			return next;
+		} );
 
 	const focusSample = ( key ) => {
 		setFocused( key );

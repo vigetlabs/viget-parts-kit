@@ -697,8 +697,14 @@ class Catalog {
 		$ids        = array_column( $items, 'id' );
 		$children   = [];
 		$groups     = [];
+		$child_page = ! empty( Explorer::features()['childPages'] );
 
 		foreach ( $items as $item ) {
+			// Blocks that only go inside a parent already show in the parent's samples.
+			if ( $item['parent'] && ! $child_page ) {
+				continue;
+			}
+
 			$entry = [
 				'id'          => $item['id'],
 				'name'        => $item['name'],

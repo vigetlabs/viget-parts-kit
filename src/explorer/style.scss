@@ -90,12 +90,39 @@
 	}
 }
 
+.vgtpk-sidebar__top {
+	align-items: flex-start;
+	display: flex;
+	gap: 8px;
+	justify-content: space-between;
+	margin: 0 0 14px;
+}
+
+.vgtpk-exit {
+	align-items: center;
+	border: 1px solid on-base(20%);
+	border-radius: 4px;
+	color: on-base(70%);
+	display: inline-flex;
+	flex: none;
+	font-size: 12px;
+	gap: 4px;
+	padding: 3px 8px;
+	text-decoration: none;
+
+	&:hover,
+	&:focus-visible {
+		border-color: on-base(50%);
+		color: $on-base;
+	}
+}
+
 .vgtpk-brand {
 	background: none;
 	border: 0;
 	cursor: pointer;
 	display: block;
-	margin: 0 0 14px;
+	margin: 0;
 	padding: 0;
 	text-align: left;
 
@@ -198,11 +225,14 @@
 	}
 
 	&__toggle {
-		background: none;
+		background: $base;
 		border: 0;
 		border-radius: 4px;
 		cursor: pointer;
+		position: sticky;
 		text-align: left;
+		top: -8px;
+		z-index: 1;
 
 		svg {
 			transition: transform 0.15s;
@@ -468,6 +498,62 @@
 
 .vgtpk-popover-wrap {
 	position: relative;
+
+	> .vgtpk-tool {
+		border-color: $line;
+
+		> svg:last-child {
+			color: $slate;
+			transform: rotate(90deg);
+		}
+	}
+}
+
+// Tooltips for toolbar controls.
+.vgtpk-toolbar [data-tooltip] {
+	position: relative;
+
+	&::after {
+		background: $ink;
+		border-radius: 4px;
+		color: #fff;
+		content: attr(data-tooltip);
+		font-size: 12px;
+		font-weight: 400;
+		left: 50%;
+		line-height: 1.3;
+		opacity: 0;
+		padding: 5px 8px;
+		pointer-events: none;
+		position: absolute;
+		top: calc(100% + 8px);
+		transform: translate(-50%, -2px);
+		transition: opacity 0.12s, transform 0.12s;
+		white-space: nowrap;
+		z-index: 30;
+	}
+
+	&:hover::after,
+	&:focus-visible::after {
+		opacity: 1;
+		transform: translate(-50%, 0);
+		transition-delay: 0.35s;
+	}
+
+	&[aria-expanded="true"]::after {
+		display: none;
+	}
+}
+
+.vgtpk-toolbar__tools > :last-child[data-tooltip]::after {
+	left: auto;
+	right: 0;
+	transform: translateY(-2px);
+}
+
+.vgtpk-toolbar__tools > :last-child[data-tooltip]:hover::after,
+.vgtpk-toolbar__tools > :last-child[data-tooltip]:focus-visible::after {
+	transform: none;
 }
 
 .vgtpk-popover {

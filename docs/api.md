@@ -106,7 +106,7 @@ JavaScript hooks run in the generator, for blocks or tweaks that only exist clie
 
 | Filter | Arguments | Use |
 | --- | --- | --- |
-| `vgtpk_explorer_features` | `array $features` | Turn controls off: `search`, `qaPages`, `home`, `resize`, `backgrounds`, `labels`, `details`, `copyMarkup`, `createPage`, `openInNewTab`, `blockIndex`, `autoRebuild`, `keyboard`. `viewports` and `contexts` take lists. `backgrounds` also takes a list of palette slugs to offer. With `home` off, the kit opens on the first block instead of the overview. `defaults` sets the starting `viewport`, `bg`, `ctx` and `labels`. |
+| `vgtpk_explorer_features` | `array $features` | Turn controls off: `search`, `qaPages`, `home`, `resize`, `backgrounds`, `labels`, `details`, `copyMarkup`, `createPage`, `openInNewTab`, `blockIndex`, `autoRebuild`, `keyboard`. `viewports` and `contexts` take lists. `backgrounds` also takes a list of palette slugs to offer. With `home` off, the kit opens on the first block instead of the overview. `childPages` (off by default) lists blocks that only go inside a parent, like Column, under that parent. `defaults` sets the starting `viewport`, `bg`, `ctx` and `labels`. |
 | `vgtpk_contexts` | `array $contexts` | Layouts a sample can be shown inside. Slug => `label` and `markup`, where `{{block}}` is the sample and `{{filler}}` a paragraph. |
 | `vgtpk_nav` | `array $nav` | The final nav: categories in inserter order, blocks alphabetical within each. |
 

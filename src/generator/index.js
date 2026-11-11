@@ -182,9 +182,20 @@ function fill( block, ctx, depth = 0 ) {
 		attributes.url = '#';
 	}
 
-	if ( block.name === 'core/image' && ! attributes.url ) {
-		attributes.url = SAMPLES[ 'core/image' ]( ctx ).attributes.url;
-	}
+	// Nested image, cover and media & text blocks get placeholder media too.
+	const media = SAMPLES[ block.name ]?.( ctx ).attributes || {};
+	[ 'url', 'mediaUrl' ].forEach( ( key ) => {
+		const missing =
+			! attributes[ key ] ||
+			/s\.w\.org|wordpress\.org/.test( attributes[ key ] );
+
+		if ( media[ key ] && missing ) {
+			attributes[ key ] = media[ key ];
+			if ( key === 'mediaUrl' ) {
+				attributes.mediaType = media.mediaType;
+			}
+		}
+	} );
 
 	if (
 		block.name.startsWith( 'acf/' ) &&

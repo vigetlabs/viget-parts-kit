@@ -226,23 +226,23 @@ class Canvas {
 
 		$contexts = [
 			'none'      => [
-				'label'  => __( 'On its own', 'viget-parts-kit' ),
+				'label'  => __( 'None', 'viget-parts-kit' ),
 				'markup' => '{{block}}',
 			],
 			'group'     => [
-				'label'  => __( 'In a padded group', 'viget-parts-kit' ),
+				'label'  => __( 'Padded group', 'viget-parts-kit' ),
 				'markup' => '<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}}},"layout":{"type":"constrained"}} --><div class="wp-block-group" style="padding-top:' . $padding . ';padding-right:' . $padding . ';padding-bottom:' . $padding . ';padding-left:' . $padding . '">{{block}}</div><!-- /wp:group -->',
 			],
 			'columns-2' => [
-				'label'  => __( 'In two columns', 'viget-parts-kit' ),
+				'label'  => __( 'Two columns', 'viget-parts-kit' ),
 				'markup' => sprintf( $columns, sprintf( $column, '{{block}}' ) . sprintf( $column, '{{filler}}' ) ),
 			],
 			'columns-3' => [
-				'label'  => __( 'In three columns', 'viget-parts-kit' ),
+				'label'  => __( 'Three columns', 'viget-parts-kit' ),
 				'markup' => sprintf( $columns, sprintf( $column, '{{block}}' ) . sprintf( $column, '{{filler}}' ) . sprintf( $column, '{{filler}}' ) ),
 			],
 			'sidebar'   => [
-				'label'  => __( 'In a narrow sidebar', 'viget-parts-kit' ),
+				'label'  => __( 'Narrow sidebar', 'viget-parts-kit' ),
 				'markup' => sprintf( $columns, sprintf( $narrow, '66.66%', '{{filler}}' ) . sprintf( $narrow, '33.33%', '{{block}}' ) ),
 			],
 		];
@@ -257,7 +257,7 @@ class Canvas {
 		$contexts = (array) apply_filters( 'vgtpk_contexts', $contexts );
 
 		$contexts['none'] = $contexts['none'] ?? [
-			'label'  => __( 'On its own', 'viget-parts-kit' ),
+			'label'  => __( 'None', 'viget-parts-kit' ),
 			'markup' => '{{block}}',
 		];
 
