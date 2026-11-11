@@ -40,7 +40,7 @@ class Network_Index {
 		$hook = add_menu_page(
 			__( 'Block Index', 'viget-parts-kit' ),
 			__( 'Block Index', 'viget-parts-kit' ),
-			'manage_network_options',
+			Admin::cap( Access::can_index_network() ),
 			self::PAGE_SLUG,
 			[ $this, 'render_page' ],
 			'dashicons-screenoptions',

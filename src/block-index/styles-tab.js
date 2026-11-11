@@ -11,7 +11,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { num, originColor } from './data';
+import { isStyleRegistered, num, originColor } from './data';
 
 export default function StylesTab( { blocks, goTo } ) {
 	const rows = useMemo(
@@ -40,9 +40,7 @@ export default function StylesTab( { blocks, goTo } ) {
 								block.registeredStyles.find(
 									( style ) => style.name === name
 								)?.label || name,
-							registered: block.registeredStyles.some(
-								( style ) => style.name === name
-							),
+							registered: isStyleRegistered( block, name ),
 							count: block.styles[ name ] || 0,
 						} ) ),
 					};

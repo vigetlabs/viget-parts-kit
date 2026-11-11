@@ -25,6 +25,8 @@ import Toolbar from './toolbar';
 import { flatten, readUrl, request, writeUrl } from './utils';
 
 const COLLAPSED_KEY = 'vgtpk-collapsed';
+const AUTO_REBUILD_KEY = 'vgtpk-auto-rebuild';
+const REBUILD_TIMEOUT = 60000;
 
 const readCollapsed = () => {
 	try {
@@ -35,9 +37,20 @@ const readCollapsed = () => {
 };
 
 export default function App( { data } ) {
-	const [ state, setFullState ] = useState( () =>
-		readUrl( data.initial, data.features.defaults )
-	);
+	const [ state, setFullState ] = useState( () => {
+		const initial = readUrl( data.initial, data.features.defaults );
+
+		// With the home screen off, open on the first block.
+		if (
+			data.features.home === false &&
+			! initial.item &&
+			! initial.page
+		) {
+			initial.item = flatten( data.nav )[ 0 ]?.id || '';
+		}
+
+		return initial;
+	} );
 	const [ query, setQuery ] = useState( '' );
 	const [ collapsed, setCollapsed ] = useState( readCollapsed );
 	const [ infoOpen, setInfoOpen ] = useState( false );
@@ -48,6 +61,7 @@ export default function App( { data } ) {
 	const [ creating, setCreating ] = useState( false );
 	const searchRef = useRef();
 	const iframeRef = useRef();
+	const rebuildPing = useRef( 0 );
 
 	const setState = useCallback(
 		( patch ) => setFullState( ( prev ) => ( { ...prev, ...patch } ) ),
@@ -107,7 +121,14 @@ export default function App( { data } ) {
 		return url.toString();
 	}, [ src, state.bg, state.labels ] );
 
-	useEffect( () => writeUrl( data.archiveUrl, state ), [ state ] );
+	// Debounced, since dragging the resize handle changes state on every pointermove.
+	useEffect( () => {
+		const timer = setTimeout(
+			() => writeUrl( data.archiveUrl, state ),
+			250
+		);
+		return () => clearTimeout( timer );
+	}, [ state ] );
 
 	useEffect( () => {
 		try {
@@ -156,7 +177,10 @@ export default function App( { data } ) {
 	};
 
 	const goHome = () => {
-		setState( { item: '', page: 0 } );
+		setState( {
+			item: data.features.home === false ? flat[ 0 ]?.id || '' : '',
+			page: 0,
+		} );
 		setMenuOpen( false );
 	};
 
@@ -189,6 +213,8 @@ export default function App( { data } ) {
 			}
 
 			if ( message.source === 'vgtpk-generator' ) {
+				rebuildPing.current = Date.now();
+
 				if ( message.type === 'progress' ) {
 					setRebuild( { done: message.done, total: message.total } );
 				}
@@ -212,18 +238,54 @@ export default function App( { data } ) {
 			return;
 		}
 
+		rebuildPing.current = Date.now();
 		setRebuild( { done: 0, total: 0 } );
 	}, [ data.urls.generator, rebuild ] );
 
+	// Give up when the builder goes quiet, so the progress bar can't hang forever.
+	const rebuilding = !! rebuild && ! rebuild.complete;
+	useEffect( () => {
+		if ( ! rebuilding ) {
+			return;
+		}
+
+		const timer = setInterval( () => {
+			if ( Date.now() - rebuildPing.current > REBUILD_TIMEOUT ) {
+				setRebuild( null );
+				showToast(
+					__(
+						'The rebuild stopped responding. Try Rebuild now.',
+						'viget-parts-kit'
+					)
+				);
+			}
+		}, 5000 );
+
+		return () => clearInterval( timer );
+	}, [ rebuilding ] );
+
 	// Rebuild quietly in the background when the blocks changed since the last build.
+	// Skipped if one just ran in this tab, so a hash that never settles can't reload in a loop.
 	useEffect( () => {
 		if (
-			data.can.manage &&
-			data.status.stale &&
-			( data.features.autoRebuild || ! data.status.exists )
+			! data.can.manage ||
+			! data.status.stale ||
+			! ( data.features.autoRebuild || ! data.status.exists )
 		) {
-			startRebuild();
+			return;
 		}
+
+		try {
+			const last = Number(
+				window.sessionStorage.getItem( AUTO_REBUILD_KEY )
+			);
+			if ( data.status.exists && Date.now() - last < 120000 ) {
+				return;
+			}
+			window.sessionStorage.setItem( AUTO_REBUILD_KEY, Date.now() );
+		} catch {}
+
+		startRebuild();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [] );
 

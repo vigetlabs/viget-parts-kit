@@ -93,6 +93,22 @@ export function StatusPill( { status } ) {
 	);
 }
 
+/**
+ * Whether a block on a record isn't registered where the record lives.
+ *
+ * @param {Object}   record     Record. On the network index it lists its own site's unregistered blocks.
+ * @param {string}   name       Block name.
+ * @param {Set|null} registered Registered block names.
+ * @return {boolean} Missing.
+ */
+export function isMissing( record, name, registered ) {
+	if ( record.unregistered ) {
+		return record.unregistered.includes( name );
+	}
+
+	return !! registered && ! registered.has( name );
+}
+
 // The block ribbon: a post's top-level blocks in document order, one segment each, colored by origin. Reads as a fingerprint of how a page is put together.
 export function Ribbon( {
 	record,
@@ -126,7 +142,7 @@ export function Ribbon( {
 			) }
 		>
 			{ seq.map( ( name, index ) => {
-				const missing = registered && ! registered.has( name );
+				const missing = isMissing( record, name, registered );
 				const color = missing
 					? MISSING_COLOR
 					: originColor( originOf( name, theme ) );

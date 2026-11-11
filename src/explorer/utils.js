@@ -62,7 +62,10 @@ export function writeUrl( archiveUrl, state ) {
 	}
 
 	if ( url.toString() !== window.location.href ) {
-		window.history.replaceState( null, '', url );
+		// Safari and Firefox throw when replaceState is called too often.
+		try {
+			window.history.replaceState( null, '', url );
+		} catch {}
 	}
 }
 

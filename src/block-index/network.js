@@ -45,6 +45,13 @@ export function buildRaw( network, site ) {
 		const known = new Set(
 			index.registered.map( ( block ) => block.name )
 		);
+		const knownStyles = new Set(
+			index.registered.flatMap( ( block ) =>
+				block.styles.map(
+					( style ) => `${ block.name }|${ style.name }`
+				)
+			)
+		);
 
 		index.records.forEach( ( record ) =>
 			raw.records.push( {
@@ -55,6 +62,9 @@ export function buildRaw( network, site ) {
 				// Registered on another site doesn't help this one.
 				unregistered: Object.keys( record.blocks ).filter(
 					( name ) => ! known.has( name )
+				),
+				unregisteredStyles: Object.keys( record.styles || {} ).filter(
+					( key ) => ! knownStyles.has( key )
 				),
 			} )
 		);

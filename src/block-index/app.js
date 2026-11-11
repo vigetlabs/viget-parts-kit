@@ -93,7 +93,9 @@ async function api( path, options = {} ) {
 	const json = await response.json();
 
 	if ( ! response.ok ) {
-		throw new Error( json?.message || response.statusText );
+		const error = new Error( json?.message || response.statusText );
+		error.status = response.status;
+		throw error;
 	}
 
 	return json;
@@ -139,14 +141,16 @@ export default function App() {
 
 			try {
 				let offset = 0;
+				let id = '';
 				let done = false;
 
 				while ( ! done ) {
 					const result = await api( 'index/scan', {
 						method: 'POST',
-						body: JSON.stringify( { mode, offset } ),
+						body: JSON.stringify( { mode, offset, scan: id } ),
 					} );
 					offset = result.offset;
+					id = result.scan || '';
 					done = result.done;
 					setScan( {
 						mode,
@@ -157,7 +161,12 @@ export default function App() {
 
 				await load();
 			} catch ( err ) {
-				setError( err.message );
+				// Another tab or user's scan took over. Show whatever it saved.
+				if ( err.status === 409 ) {
+					await load();
+				} else {
+					setError( err.message );
+				}
 			}
 
 			setScan( null );

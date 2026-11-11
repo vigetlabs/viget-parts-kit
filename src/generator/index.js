@@ -795,11 +795,11 @@ function collectItems() {
 		)
 		.forEach( ( type ) => {
 			const conf = getConfig( { id: type.name, name: type.name } );
-			const parent =
-				conf.parent ||
-				( type.parent || type.ancestor ).find( ( name ) =>
-					isRegistered( name )
-				);
+			const parent = isRegistered( conf.parent )
+				? conf.parent
+				: ( type.parent || type.ancestor ).find( ( name ) =>
+						isRegistered( name )
+					);
 
 			if (
 				parent &&
@@ -903,6 +903,21 @@ async function run() {
 		0.02
 	);
 
+	try {
+		await buildAndUpload();
+	} catch ( error ) {
+		const message =
+			error?.message ||
+			__( 'The Parts Kit couldn’t be built.', 'viget-parts-kit' );
+		overlay.fail( message );
+		notify( { type: 'error', message } );
+	}
+}
+
+/**
+ * Build every sample and upload the catalog.
+ */
+async function buildAndUpload() {
 	apiFetch.use( apiFetch.createNonceMiddleware( config.nonce ) );
 
 	await waitForBlocks();
@@ -969,45 +984,36 @@ async function run() {
 		notify( { type: 'progress', done: index + 1, total: items.length } );
 	} );
 
-	try {
-		await apiFetch( {
-			path: '/vgtpk/v1/catalog/begin',
-			method: 'POST',
-			data: { categories },
-		} );
+	await apiFetch( {
+		path: '/vgtpk/v1/catalog/begin',
+		method: 'POST',
+		data: { categories },
+	} );
 
-		for ( let i = 0; i < built.length; i += BATCH_SIZE ) {
-			overlay.update(
-				__( 'Saving the Parts Kit', 'viget-parts-kit' ),
-				sprintf(
-					/* translators: 1: saved count, 2: total. */
-					__( 'Saved %1$d of %2$d blocks', 'viget-parts-kit' ),
-					Math.min( i + BATCH_SIZE, built.length ),
-					built.length
-				),
-				0.75 + ( i / built.length ) * 0.24
-			);
-
-			await apiFetch( {
-				path: '/vgtpk/v1/catalog/items',
-				method: 'POST',
-				data: { items: built.slice( i, i + BATCH_SIZE ) },
-			} );
-		}
+	for ( let i = 0; i < built.length; i += BATCH_SIZE ) {
+		overlay.update(
+			__( 'Saving the Parts Kit', 'viget-parts-kit' ),
+			sprintf(
+				/* translators: 1: saved count, 2: total. */
+				__( 'Saved %1$d of %2$d blocks', 'viget-parts-kit' ),
+				Math.min( i + BATCH_SIZE, built.length ),
+				built.length
+			),
+			0.75 + ( i / built.length ) * 0.24
+		);
 
 		await apiFetch( {
-			path: '/vgtpk/v1/catalog/commit',
+			path: '/vgtpk/v1/catalog/items',
 			method: 'POST',
-			data: { post_id: config.postId },
+			data: { items: built.slice( i, i + BATCH_SIZE ) },
 		} );
-	} catch ( error ) {
-		const message =
-			error?.message ||
-			__( 'The server didn’t accept the upload.', 'viget-parts-kit' );
-		overlay.fail( message );
-		notify( { type: 'error', message } );
-		return;
 	}
+
+	await apiFetch( {
+		path: '/vgtpk/v1/catalog/commit',
+		method: 'POST',
+		data: { post_id: config.postId },
+	} );
 
 	overlay.update(
 		sprintf(

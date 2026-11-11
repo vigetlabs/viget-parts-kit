@@ -106,7 +106,7 @@ JavaScript hooks run in the generator, for blocks or tweaks that only exist clie
 
 | Filter | Arguments | Use |
 | --- | --- | --- |
-| `vgtpk_explorer_features` | `array $features` | Turn controls off: `search`, `qaPages`, `home`, `resize`, `backgrounds`, `labels`, `details`, `copyMarkup`, `createPage`, `openInNewTab`, `blockIndex`, `autoRebuild`, `keyboard`. `viewports` and `contexts` take lists. `backgrounds` also takes a list of palette slugs to offer. `defaults` sets the starting `viewport`, `bg`, `ctx` and `labels`. |
+| `vgtpk_explorer_features` | `array $features` | Turn controls off: `search`, `qaPages`, `home`, `resize`, `backgrounds`, `labels`, `details`, `copyMarkup`, `createPage`, `openInNewTab`, `blockIndex`, `autoRebuild`, `keyboard`. `viewports` and `contexts` take lists. `backgrounds` also takes a list of palette slugs to offer. With `home` off, the kit opens on the first block instead of the overview. `defaults` sets the starting `viewport`, `bg`, `ctx` and `labels`. |
 | `vgtpk_contexts` | `array $contexts` | Layouts a sample can be shown inside. Slug => `label` and `markup`, where `{{block}}` is the sample and `{{filler}}` a paragraph. |
 | `vgtpk_nav` | `array $nav` | The final nav: categories in inserter order, blocks alphabetical within each. |
 
@@ -155,7 +155,7 @@ The Audit checks registration for every block (title, description, icon, keyword
 
 | Filter | Arguments | Use |
 | --- | --- | --- |
-| `vgtpk_parts_kit` | `array $nav` | The nav served at `/parts-kit.json` for the standalone [@viget/parts-kit](https://github.com/vigetlabs/parts-kit) viewer. Same shape as 1.x. |
+| `vgtpk_parts_kit` | `array $nav` | The nav served at `/parts-kit.json` for the standalone [@viget/parts-kit](https://github.com/vigetlabs/parts-kit) viewer. Same shape as 1.x. Another origin can only read it while visibility is public. |
 
 ## Actions
 

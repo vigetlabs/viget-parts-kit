@@ -10,6 +10,7 @@ namespace Viget\PartsKit;
 use WP_Block_Styles_Registry;
 use WP_Block_Template;
 use WP_Block_Type_Registry;
+use WP_Error;
 use WP_Post;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -157,6 +158,10 @@ class Block_Index {
 						'default' => 0,
 						'minimum' => 0,
 					],
+					'scan'   => [
+						'type'    => 'string',
+						'default' => '',
+					],
 				],
 			]
 		);
@@ -225,10 +230,18 @@ class Block_Index {
 		$styles     = WP_Block_Styles_Registry::get_instance();
 		$audit      = new Block_Audit();
 		$icons      = [];
+		$js_styles  = [];
 
+		// The catalog is built in the editor, so it also has icons and styles registered in JavaScript.
 		foreach ( vgtpk()->catalog->get_items() as $item ) {
 			if ( empty( $icons[ $item['name'] ] ) && ! empty( $item['icon'] ) ) {
 				$icons[ $item['name'] ] = $item['icon'];
+			}
+
+			foreach ( (array) ( $item['styles'] ?? [] ) as $style ) {
+				if ( ! empty( $style['name'] ) ) {
+					$js_styles[ $item['name'] ][ $style['name'] ] = $style;
+				}
 			}
 		}
 
@@ -245,6 +258,17 @@ class Block_Index {
 				],
 				array_merge( (array) ( $type->styles ?? [] ), array_values( $styles->get_registered_styles_for_block( $name ) ) )
 			);
+
+			$known = array_column( $block_styles, 'name' );
+			foreach ( $js_styles[ $name ] ?? [] as $style_name => $style ) {
+				if ( ! \in_array( $style_name, $known, true ) ) {
+					$block_styles[] = [
+						'name'      => $style_name,
+						'label'     => $style['label'] ?? $style_name,
+						'isDefault' => false,
+					];
+				}
+			}
 
 			$registered[] = [
 				'name'        => $name,
@@ -340,15 +364,16 @@ class Block_Index {
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
-	 * @return WP_REST_Response
+	 * @return WP_REST_Response|WP_Error
 	 */
-	public function rest_scan( WP_REST_Request $request ): WP_REST_Response {
+	public function rest_scan( WP_REST_Request $request ): WP_REST_Response|WP_Error {
 		$index  = $this->get();
 		$mode   = empty( $index['scanned_at'] ) ? 'full' : $request->get_param( 'mode' );
 		$offset = (int) $request->get_param( 'offset' );
 
 		if ( 0 === $offset ) {
 			$pending = [
+				'id'         => wp_generate_uuid4(),
 				'schema'     => self::SCHEMA,
 				'mode'       => $mode,
 				'started_at' => gmdate( 'Y-m-d H:i:s' ),
@@ -358,14 +383,15 @@ class Block_Index {
 			];
 		} else {
 			$pending = get_option( self::PENDING_OPTION );
-			$pending = \is_array( $pending ) ? $pending : [
-				'schema'     => self::SCHEMA,
-				'mode'       => 'full',
-				'started_at' => gmdate( 'Y-m-d H:i:s' ),
-				'since'      => null,
-				'records'    => [],
-				'total'      => 0,
-			];
+
+			// Another scan finished or took over. Merging into it would save a partial index.
+			if ( ! \is_array( $pending ) || ( $pending['id'] ?? '' ) !== $request->get_param( 'scan' ) ) {
+				return new WP_Error(
+					'vgtpk_scan_superseded',
+					__( 'Another scan replaced this one.', 'viget-parts-kit' ),
+					[ 'status' => 409 ]
+				);
+			}
 		}
 
 		$args = [
@@ -406,6 +432,7 @@ class Block_Index {
 
 			return new WP_REST_Response(
 				[
+					'scan'      => $pending['id'],
 					'done'      => false,
 					'offset'    => $processed,
 					'processed' => $processed,
@@ -417,6 +444,9 @@ class Block_Index {
 		if ( 'changes' === $pending['mode'] ) {
 			$pending['records'] = $this->prune( $pending['records'] );
 		}
+
+		// Templates are always read in full, so deleted ones drop out.
+		$pending['records'] = array_filter( $pending['records'], static fn( $record ) => 'template' !== $record['source'] );
 
 		foreach ( $this->scan_templates() as $record ) {
 			$pending['records'][ $record['key'] ] = $record;

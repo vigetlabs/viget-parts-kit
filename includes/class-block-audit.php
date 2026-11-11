@@ -344,8 +344,14 @@ class Block_Audit {
 			}
 		}
 
-		$roots = array_unique( [ get_stylesheet_directory(), get_template_directory() ] );
-		foreach ( (array) get_option( 'active_plugins', [] ) as $plugin ) {
+		$roots   = array_unique( [ get_stylesheet_directory(), get_template_directory(), WPMU_PLUGIN_DIR ] );
+		$plugins = (array) get_option( 'active_plugins', [] );
+
+		if ( is_multisite() ) {
+			$plugins = array_merge( $plugins, array_keys( (array) get_site_option( 'active_sitewide_plugins', [] ) ) );
+		}
+
+		foreach ( array_unique( $plugins ) as $plugin ) {
 			$roots[] = WP_PLUGIN_DIR . '/' . dirname( $plugin );
 		}
 
@@ -420,7 +426,7 @@ class Block_Audit {
 					continue;
 				}
 
-				$path = wp_normalize_path( $dir . '/' . ltrim( substr( $reference, 5 ), './' ) );
+				$path = wp_normalize_path( $dir . '/' . remove_block_asset_path_prefix( $reference ) );
 
 				if ( ! is_file( $path ) ) {
 					$findings[] = self::finding(

@@ -144,6 +144,11 @@ export default function Toolbar( {
 	const features = data.features;
 	const viewports = features.viewports || [];
 	const contexts = features.contexts || [];
+	const palette = Array.isArray( features.backgrounds )
+		? data.palette.filter( ( color ) =>
+				features.backgrounds.includes( color.slug )
+			)
+		: data.palette;
 
 	return (
 		<div className="vgtpk-toolbar">
@@ -216,7 +221,7 @@ export default function Toolbar( {
 
 					{ features.backgrounds && (
 						<Backgrounds
-							palette={ data.palette }
+							palette={ palette }
 							value={ state.bg }
 							onChange={ ( bg ) => setState( { bg } ) }
 						/>

@@ -20,6 +20,7 @@ import {
 	sortRows,
 	typeLabel,
 	useTooltip,
+	isMissing,
 } from './common';
 
 const PAGE_SIZE = 100;
@@ -327,8 +328,10 @@ export default function Content( {
 																				className="vgtpk-origin-dot"
 																				style={ {
 																					background:
-																						registeredSet.has(
-																							name
+																						! isMissing(
+																							record,
+																							name,
+																							registeredSet
 																						)
 																							? originColor(
 																									originOf(

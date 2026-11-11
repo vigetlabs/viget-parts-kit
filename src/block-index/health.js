@@ -81,23 +81,44 @@ export default function Health( { issues, raw, goTo } ) {
 											>
 												{ block.title }
 												<code>{ block.name }</code>
-												{ block.instances > 0 && (
+												{ block.registered &&
+												block.unregisteredPages > 0 ? (
 													<span>
 														{ sprintf(
-															/* translators: %s: page count. */
+															/* translators: 1: site names, 2: page count. */
 															_n(
-																'%s page',
-																'%s pages',
-																block.pages
-																	.length,
+																'Not registered on %1$s · %2$s page',
+																'Not registered on %1$s · %2$s pages',
+																block.unregisteredPages,
 																'viget-parts-kit'
 															),
+															block.unregisteredSites.join(
+																', '
+															),
 															num(
-																block.pages
-																	.length
+																block.unregisteredPages
 															)
 														) }
 													</span>
+												) : (
+													block.instances > 0 && (
+														<span>
+															{ sprintf(
+																/* translators: %s: page count. */
+																_n(
+																	'%s page',
+																	'%s pages',
+																	block.pages
+																		.length,
+																	'viget-parts-kit'
+																),
+																num(
+																	block.pages
+																		.length
+																)
+															) }
+														</span>
+													)
 												) }
 											</button>
 										</li>

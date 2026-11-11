@@ -94,6 +94,9 @@ export function aggregateBlocks( raw, records ) {
 				registeredStyles: block?.styles || [],
 				instances: 0,
 				unregisteredUses: 0,
+				unregisteredPages: 0,
+				unregisteredSites: [],
+				unregisteredStyles: {},
 				pages: [],
 				styles: {},
 				aligns: {},
@@ -113,6 +116,10 @@ export function aggregateBlocks( raw, records ) {
 
 			if ( record.unregistered?.includes( name ) ) {
 				entry.unregisteredUses += count;
+				entry.unregisteredPages++;
+				if ( ! entry.unregisteredSites.includes( record.siteName ) ) {
+					entry.unregisteredSites.push( record.siteName );
+				}
 			}
 		} );
 
@@ -120,6 +127,11 @@ export function aggregateBlocks( raw, records ) {
 			const [ name, style ] = key.split( '|' );
 			const entry = row( name );
 			entry.styles[ style ] = ( entry.styles[ style ] || 0 ) + count;
+
+			// On the network index, used on a site that doesn't register it.
+			if ( record.unregisteredStyles?.includes( key ) ) {
+				entry.unregisteredStyles[ style ] = true;
+			}
 		} );
 
 		Object.entries( record.aligns || {} ).forEach( ( [ key, count ] ) => {
@@ -150,6 +162,20 @@ export function aggregateBlocks( raw, records ) {
 export const LEVELS = [ 'critical', 'serious', 'warning', 'info' ];
 
 /**
+ * Whether a style is registered everywhere content uses it.
+ *
+ * @param {Object} entry Block row.
+ * @param {string} style Style name.
+ * @return {boolean} Registered.
+ */
+export function isStyleRegistered( entry, style ) {
+	return (
+		entry.registeredStyles.some( ( { name } ) => name === style ) &&
+		! entry.unregisteredStyles[ style ]
+	);
+}
+
+/**
  * Audit findings that come from how a block is used, not how it's registered.
  *
  * @param {Object} entry Block row.
@@ -171,7 +197,19 @@ export function usageFindings( entry ) {
 			finding(
 				'critical',
 				'not-registered',
-				__( 'Used in content but not registered', 'viget-parts-kit' ),
+				entry.registered
+					? sprintf(
+							/* translators: %s: list of site names. */
+							__(
+								'Used on %s, where it isn’t registered',
+								'viget-parts-kit'
+							),
+							entry.unregisteredSites.join( ', ' )
+						)
+					: __(
+							'Used in content but not registered',
+							'viget-parts-kit'
+						),
 				__(
 					'Authors see an “unsupported block” notice and the frontend may render nothing.',
 					'viget-parts-kit'
@@ -216,10 +254,8 @@ export function usageFindings( entry ) {
 		);
 	}
 
-	const registered = entry.registeredStyles.map( ( style ) => style.name );
-
 	Object.keys( entry.styles )
-		.filter( ( style ) => ! registered.includes( style ) )
+		.filter( ( style ) => ! isStyleRegistered( entry, style ) )
 		.forEach( ( style ) =>
 			list.push(
 				finding(
@@ -323,9 +359,8 @@ export function findings( blocks, records, all ) {
 
 	const unregisteredStyles = [];
 	blocks.forEach( ( block ) => {
-		const known = block.registeredStyles.map( ( style ) => style.name );
 		Object.entries( block.styles ).forEach( ( [ style, count ] ) => {
-			if ( ! known.includes( style ) ) {
+			if ( ! isStyleRegistered( block, style ) ) {
 				unregisteredStyles.push( { block, style, count } );
 			}
 		} );

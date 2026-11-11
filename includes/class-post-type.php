@@ -25,6 +25,9 @@ class Post_Type {
 	public function __construct() {
 		add_action( 'init', [ $this, 'register' ] );
 		add_action( 'pre_get_posts', [ $this, 'trim_archive_query' ] );
+		add_action( 'pre_get_posts', [ $this, 'exclude_from_feeds_and_search' ] );
+		add_filter( 'rest_pre_dispatch', [ $this, 'guard_rest' ], 10, 3 );
+		add_filter( 'rest_post_search_query', [ $this, 'exclude_from_rest_search' ] );
 		add_filter( 'template_include', [ $this, 'template_include' ], 999 );
 		add_filter( 'wp_robots', [ $this, 'robots' ] );
 		add_filter( 'wp_sitemaps_post_types', [ $this, 'remove_from_sitemaps' ] );
@@ -131,6 +134,74 @@ class Post_Type {
 	}
 
 	/**
+	 * Keep QA pages out of feeds and searches, which never reach the access check.
+	 *
+	 * @param WP_Query $query The query.
+	 *
+	 * @return void
+	 */
+	public function exclude_from_feeds_and_search( WP_Query $query ): void {
+		if ( is_admin() || ! ( $query->is_feed() || $query->is_search() ) ) {
+			return;
+		}
+
+		$types = (array) $query->get( 'post_type' );
+
+		if ( ! \in_array( self::NAME, $types, true ) ) {
+			return;
+		}
+
+		$types = array_values( array_diff( $types, [ self::NAME ] ) );
+		$query->set( 'post_type', $types ? $types : 'post' );
+	}
+
+	/**
+	 * Apply the Parts Kit visibility setting to reads of QA pages over REST. Editors keep access.
+	 *
+	 * @param mixed            $result  Response to short-circuit with, or null.
+	 * @param \WP_REST_Server  $server  Server.
+	 * @param \WP_REST_Request $request Request.
+	 *
+	 * @return mixed
+	 */
+	public function guard_rest( mixed $result, \WP_REST_Server $server, \WP_REST_Request $request ): mixed {
+		$base = '/wp/v2/' . self::NAME;
+
+		if ( null !== $result || 'GET' !== $request->get_method() || ! str_starts_with( $request->get_route(), $base ) ) {
+			return $result;
+		}
+
+		if ( Access::can_view() || current_user_can( 'edit_pages' ) ) {
+			return $result;
+		}
+
+		return new \WP_Error(
+			'rest_forbidden',
+			__( 'You don’t have access to the Parts Kit.', 'viget-parts-kit' ),
+			[ 'status' => rest_authorization_required_code() ]
+		);
+	}
+
+	/**
+	 * Leave QA pages out of /wp/v2/search for anyone who can't view the Parts Kit.
+	 *
+	 * @param array $args Query args.
+	 *
+	 * @return array
+	 */
+	public function exclude_from_rest_search( array $args ): array {
+		if ( Access::can_view() || current_user_can( 'edit_pages' ) ) {
+			return $args;
+		}
+
+		$types = array_values( array_diff( (array) ( $args['post_type'] ?? [] ), [ self::NAME ] ) );
+
+		$args['post_type'] = $types ? $types : [ 'post' ];
+
+		return $args;
+	}
+
+	/**
 	 * Whether this request is a Parts Kit screen.
 	 *
 	 * @return bool
@@ -208,10 +279,14 @@ class Post_Type {
 	 * @return array
 	 */
 	public static function get_pages(): array {
-		$statuses = [ 'publish', 'private' ];
+		$statuses = [ 'publish' ];
+
+		if ( current_user_can( 'read_private_pages' ) ) {
+			$statuses[] = 'private';
+		}
 
 		if ( current_user_can( 'edit_pages' ) ) {
-			$statuses = [ 'publish', 'private', 'draft', 'pending', 'future' ];
+			$statuses = array_merge( $statuses, [ 'draft', 'pending', 'future' ] );
 		}
 
 		$posts = get_posts(
@@ -232,7 +307,7 @@ class Post_Type {
 		return array_map(
 			static fn( $post ) => [
 				'id'          => $post->ID,
-				'title'       => get_the_title( $post ) ? get_the_title( $post ) : __( '(no title)', 'viget-parts-kit' ),
+				'title'       => get_the_title( $post ) ? html_entity_decode( get_the_title( $post ), ENT_QUOTES, get_bloginfo( 'charset' ) ) : __( '(no title)', 'viget-parts-kit' ),
 				'slug'        => $post->post_name,
 				'parent'      => $post->post_parent,
 				'status'      => $post->post_status,

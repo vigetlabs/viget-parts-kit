@@ -11,7 +11,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { LEVELS, num, originColor, ORIGINS } from './data';
+import { LEVELS, isStyleRegistered, num, originColor, ORIGINS } from './data';
 import {
 	BlockIcon,
 	InlineBar,
@@ -220,7 +220,7 @@ function Styles( { block } ) {
 							return {
 								key: name,
 								label: registered?.label || name,
-								note: registered
+								note: isStyleRegistered( block, name )
 									? ''
 									: __( 'not registered', 'viget-parts-kit' ),
 								count: block.styles[ name ] || 0,

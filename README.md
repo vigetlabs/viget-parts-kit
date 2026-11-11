@@ -45,7 +45,7 @@ The plugin is a utility, so it's built to cost nothing on a production site:
 
 - No scripts or styles load outside Parts Kit screens.
 - Nothing hooks into saving posts.
-- The catalog and the index live in options that aren't autoloaded. Settings aren't autoloaded either. The one autoloaded option is a few bytes: custom admin scheme swatches, rewritten only when a scheme changes, so the frontend explorer can match the admin.
+- The catalog and the index live in options that aren't autoloaded. Settings aren't autoloaded either. Two tiny options are autoloaded: the rewrite version, and custom admin scheme swatches when a custom scheme is in use (so the frontend explorer can match the admin).
 - The GitHub updater only loads in wp-admin and cron.
 - Parts Kit pages are private by default, always `noindex`, and excluded from core, Yoast and Rank Math sitemaps.
 

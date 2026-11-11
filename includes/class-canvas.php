@@ -133,6 +133,11 @@ class Canvas {
 
 		$this->title = get_the_title( $post );
 
+		if ( post_password_required( $post ) ) {
+			$this->content = get_the_password_form( $post );
+			return;
+		}
+
 		setup_postdata( $GLOBALS['post'] = $post ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found -- The canvas is the loop for this post.
 
 		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core filter.

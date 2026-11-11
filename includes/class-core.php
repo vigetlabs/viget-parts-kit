@@ -175,15 +175,14 @@ class Core {
 	}
 
 	/**
-	 * Activation: register the post type so its rewrites exist, then flush.
+	 * Activation runs after init, before the plugin's rewrites are added. Clearing the version
+	 * lets maybe_flush_rewrites() flush on the next request, once everything is registered.
 	 *
 	 * @return void
 	 */
 	public static function activate(): void {
 		Settings::add_defaults();
-		vgtpk()->post_type->register();
-		flush_rewrite_rules();
-		update_option( 'vgtpk_rewrite_version', self::REWRITE_VERSION, true );
+		delete_option( 'vgtpk_rewrite_version' );
 	}
 
 	/**

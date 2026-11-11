@@ -54,7 +54,7 @@ class Admin {
 			$parent,
 			__( 'Block Index', 'viget-parts-kit' ),
 			__( 'Block Index', 'viget-parts-kit' ),
-			'edit_others_posts',
+			self::cap( Access::can_index() ),
 			Block_Index::PAGE_SLUG,
 			[ vgtpk()->block_index, 'render_page' ]
 		);
@@ -63,14 +63,40 @@ class Admin {
 			add_action( 'load-' . $index_hook, [ vgtpk()->block_index, 'enqueue' ] );
 		}
 
-		add_submenu_page(
+		$settings_hook = add_submenu_page(
 			$parent,
 			__( 'Parts Kit Settings', 'viget-parts-kit' ),
 			__( 'Settings', 'viget-parts-kit' ),
-			'edit_theme_options',
+			self::cap( Access::can_manage() ),
 			Settings::PAGE_SLUG,
 			[ vgtpk()->settings, 'render_page' ]
 		);
+
+		if ( $settings_hook ) {
+			add_action( 'load-' . $settings_hook, [ $this, 'guard_settings' ] );
+		}
+	}
+
+	/**
+	 * Menu capability for an Access check, so the vgtpk_can_* filters can grant access as well as remove it.
+	 *
+	 * @param bool $allowed Result of the Access check.
+	 *
+	 * @return string
+	 */
+	public static function cap( bool $allowed ): string {
+		return $allowed ? 'read' : 'do_not_allow';
+	}
+
+	/**
+	 * Stop the settings page for anyone who can't manage the Parts Kit.
+	 *
+	 * @return void
+	 */
+	public function guard_settings(): void {
+		if ( ! Access::can_manage() ) {
+			wp_die( esc_html__( 'You don’t have access to the Parts Kit settings.', 'viget-parts-kit' ), '', [ 'response' => 403 ] );
+		}
 	}
 
 	/**

@@ -29,7 +29,8 @@ class Explorer {
 		add_action( 'init', [ $this, 'register_block' ] );
 		add_action( 'init', [ $this, 'add_json_rewrite' ] );
 		add_filter( 'query_vars', [ $this, 'query_vars' ] );
-		add_action( 'template_redirect', [ $this, 'render_json' ] );
+		// Before redirect_canonical(), which would add a trailing slash.
+		add_action( 'template_redirect', [ $this, 'render_json' ], 1 );
 	}
 
 	/**
@@ -324,6 +325,12 @@ class Explorer {
 		$nav = apply_filters( 'vgtpk_parts_kit', $nav );
 
 		nocache_headers();
+
+		// A public kit can be read by the standalone viewer on another origin.
+		if ( 'public' === vgtpk()->settings->get( 'visibility' ) ) {
+			header( 'Access-Control-Allow-Origin: *' );
+		}
+
 		wp_send_json(
 			[
 				'schemaVersion' => '0.0.1',

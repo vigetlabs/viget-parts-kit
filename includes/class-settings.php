@@ -106,7 +106,7 @@ class Settings {
 			]
 		);
 
-		add_filter( 'option_page_capability_' . self::PAGE_SLUG, static fn() => 'edit_theme_options' );
+		add_filter( 'option_page_capability_' . self::PAGE_SLUG, static fn() => Admin::cap( Access::can_manage() ) );
 	}
 
 	/**
