@@ -53,6 +53,16 @@ $option = Settings::OPTION_NAME;
 				</td>
 			</tr>
 			<tr>
+				<th scope="row"><?php esc_html_e( 'Variations', 'viget-parts-kit' ); ?></th>
+				<td>
+					<label>
+						<input type="checkbox" name="<?php echo esc_attr( $option ); ?>[group_variations]" value="1" <?php checked( ! empty( $settings['group_variations'] ) ); ?>>
+						<?php esc_html_e( 'Group variations under their block', 'viget-parts-kit' ); ?>
+					</label>
+					<p class="description"><?php esc_html_e( 'Off lists every variation alphabetically with the other blocks.', 'viget-parts-kit' ); ?></p>
+				</td>
+			</tr>
+			<tr>
 				<th scope="row"><?php esc_html_e( 'Placeholder images', 'viget-parts-kit' ); ?></th>
 				<td>
 					<p>

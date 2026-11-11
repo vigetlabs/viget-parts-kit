@@ -43,11 +43,12 @@ class Settings {
 	 */
 	public static function defaults(): array {
 		return [
-			'visibility'      => 'private',
-			'capability'      => 'edit_posts',
-			'excluded_blocks' => [],
-			'placeholder_bg'  => 'E5F6FC',
-			'placeholder_fg'  => '00365E',
+			'visibility'       => 'private',
+			'capability'       => 'edit_posts',
+			'excluded_blocks'  => [],
+			'group_variations' => false,
+			'placeholder_bg'   => 'E5F6FC',
+			'placeholder_fg'   => '00365E',
 		];
 	}
 
@@ -140,11 +141,12 @@ class Settings {
 		$this->settings = null;
 
 		return [
-			'visibility'      => 'public' === ( $input['visibility'] ?? '' ) ? 'public' : 'private',
-			'capability'      => \in_array( $input['capability'] ?? '', $caps, true ) ? $input['capability'] : $defaults['capability'],
-			'excluded_blocks' => $excluded,
-			'placeholder_bg'  => self::sanitize_hex( $input['placeholder_bg'] ?? '', $defaults['placeholder_bg'] ),
-			'placeholder_fg'  => self::sanitize_hex( $input['placeholder_fg'] ?? '', $defaults['placeholder_fg'] ),
+			'visibility'       => 'public' === ( $input['visibility'] ?? '' ) ? 'public' : 'private',
+			'capability'       => \in_array( $input['capability'] ?? '', $caps, true ) ? $input['capability'] : $defaults['capability'],
+			'excluded_blocks'  => $excluded,
+			'group_variations' => ! empty( $input['group_variations'] ),
+			'placeholder_bg'   => self::sanitize_hex( $input['placeholder_bg'] ?? '', $defaults['placeholder_bg'] ),
+			'placeholder_fg'   => self::sanitize_hex( $input['placeholder_fg'] ?? '', $defaults['placeholder_fg'] ),
 		];
 	}
 

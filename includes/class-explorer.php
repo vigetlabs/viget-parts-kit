@@ -185,10 +185,10 @@ class Explorer {
 		}
 
 		$defaults = [
-			'search'       => true,
-			'qaPages'      => true,
-			'home'         => true,
-			'viewports'    => [
+			'search'          => true,
+			'qaPages'         => true,
+			'home'            => true,
+			'viewports'       => [
 				[
 					'slug'  => 'mobile',
 					'label' => __( 'Mobile', 'viget-parts-kit' ),
@@ -210,19 +210,20 @@ class Explorer {
 					'width' => null,
 				],
 			],
-			'resize'       => true,
-			'backgrounds'  => true,
-			'contexts'     => $contexts,
-			'labels'       => true,
-			'details'      => true,
-			'copyMarkup'   => true,
-			'createPage'   => true,
-			'openInNewTab' => true,
-			'blockIndex'   => true,
-			'childPages'   => false,
-			'autoRebuild'  => true,
-			'keyboard'     => true,
-			'defaults'     => [
+			'resize'          => true,
+			'backgrounds'     => true,
+			'contexts'        => $contexts,
+			'labels'          => true,
+			'details'         => true,
+			'copyMarkup'      => true,
+			'createPage'      => true,
+			'openInNewTab'    => true,
+			'blockIndex'      => true,
+			'childPages'      => false,
+			'groupVariations' => (bool) vgtpk()->settings->get( 'group_variations' ),
+			'autoRebuild'     => true,
+			'keyboard'        => true,
+			'defaults'        => [
 				'viewport' => 'full',
 				'bg'       => '',
 				'ctx'      => 'none',

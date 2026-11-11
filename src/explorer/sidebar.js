@@ -136,8 +136,6 @@ export default function Sidebar( {
 	onSelectPage,
 	onHome,
 	searchRef,
-	groupVariations,
-	setGroupVariations,
 } ) {
 	const lower = query.trim().toLowerCase();
 	const flat = useMemo( () => flatten( data.nav ), [ data.nav ] );
@@ -379,7 +377,7 @@ export default function Sidebar( {
 								</button>
 								{ isOpen && (
 									<ul>
-										{ ( groupVariations
+										{ ( data.features.groupVariations
 											? nestVariations( category.items )
 											: category.items
 										).map( ( item ) => (
@@ -397,31 +395,14 @@ export default function Sidebar( {
 					} ) }
 			</div>
 
-			<footer className="vgtpk-sidebar__footer">
-				<label
-					className="vgtpk-sidebar__option"
-					htmlFor="vgtpk-group-variations"
-				>
-					<input
-						id="vgtpk-group-variations"
-						type="checkbox"
-						checked={ groupVariations }
-						onChange={ ( event ) =>
-							setGroupVariations( event.target.checked )
-						}
-					/>
-					{ __(
-						'Group variations under their block',
-						'viget-parts-kit'
-					) }
-				</label>
-				{ data.urls.blockIndex && data.features.blockIndex && (
+			{ data.urls.blockIndex && data.features.blockIndex && (
+				<footer className="vgtpk-sidebar__footer">
 					<a href={ data.urls.blockIndex }>
 						<IndexIcon />
 						{ __( 'Block Index', 'viget-parts-kit' ) }
 					</a>
-				) }
-			</footer>
+				</footer>
+			) }
 		</nav>
 	);
 }

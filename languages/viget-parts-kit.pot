@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-11T18:32:53+00:00\n"
+"POT-Creation-Date: 2026-11-11T18:41:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: viget-parts-kit\n"
@@ -509,7 +509,7 @@ msgstr ""
 msgid "Fill"
 msgstr ""
 
-#: includes/class-explorer.php:309
+#: includes/class-explorer.php:310
 #: includes/class-post-type.php:83
 msgid "QA Pages"
 msgstr ""
@@ -678,19 +678,19 @@ msgstr ""
 msgid "Learn more"
 msgstr ""
 
-#: includes/class-settings.php:176
+#: includes/class-settings.php:178
 msgid "Anyone logged in"
 msgstr ""
 
-#: includes/class-settings.php:177
+#: includes/class-settings.php:179
 msgid "Contributors and up"
 msgstr ""
 
-#: includes/class-settings.php:178
+#: includes/class-settings.php:180
 msgid "Editors and up"
 msgstr ""
 
-#: includes/class-settings.php:179
+#: includes/class-settings.php:181
 msgid "Administrators only"
 msgstr ""
 
@@ -728,20 +728,33 @@ msgid "One block name per line. These stay out of the Parts Kit even if they’r
 msgstr ""
 
 #: views/admin/settings.php:56
+#: build/block-index.js:6
+msgid "Variations"
+msgstr ""
+
+#: views/admin/settings.php:60
+msgid "Group variations under their block"
+msgstr ""
+
+#: views/admin/settings.php:62
+msgid "Off lists every variation alphabetically with the other blocks."
+msgstr ""
+
+#: views/admin/settings.php:66
 msgid "Placeholder images"
 msgstr ""
 
-#: views/admin/settings.php:59
+#: views/admin/settings.php:69
 #: build/explorer.js:10
 msgid "Background"
 msgstr ""
 
-#: views/admin/settings.php:63
+#: views/admin/settings.php:73
 msgid "Text"
 msgstr ""
 
 #. translators: %s: placehold.co link.
-#: views/admin/settings.php:70
+#: views/admin/settings.php:80
 #, php-format
 msgid "Sample images come from %s. Rebuild the Parts Kit after changing these."
 msgstr ""
@@ -1040,10 +1053,6 @@ msgstr ""
 
 #: build/block-index.js:6
 msgid "No supports declared, so the block gets none of the editor’s design tools."
-msgstr ""
-
-#: build/block-index.js:6
-msgid "Variations"
 msgstr ""
 
 #: build/block-index.js:6
@@ -1663,10 +1672,6 @@ msgstr ""
 
 #: build/explorer.js:5
 msgid "Add a QA page"
-msgstr ""
-
-#: build/explorer.js:5
-msgid "Group variations under their block"
 msgstr ""
 
 #. translators: %d: number of blocks.

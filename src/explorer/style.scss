@@ -90,21 +90,6 @@
 	}
 }
 
-.vgtpk-sidebar__option {
-	align-items: center;
-	color: on-base(60%);
-	cursor: pointer;
-	display: flex;
-	font-size: 12px;
-	gap: 8px;
-	padding: 4px 8px 8px;
-
-	input {
-		accent-color: $accent;
-		margin: 0;
-	}
-}
-
 .vgtpk-sidebar__top {
 	align-items: flex-start;
 	display: flex;
