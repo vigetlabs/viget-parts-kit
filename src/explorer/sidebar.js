@@ -53,6 +53,45 @@ export function BlockIcon( { item } ) {
 	);
 }
 
+/**
+ * Nest each variation under its block, when the block itself is in the list.
+ *
+ * @param {Array} items Category items.
+ * @return {Array} Items.
+ */
+function nestVariations( items ) {
+	const bases = new Map(
+		items
+			.filter( ( item ) => item.id === item.name )
+			.map( ( item ) => [
+				item.name,
+				{ ...item, children: [ ...item.children ] },
+			] )
+	);
+
+	return items.flatMap( ( item ) => {
+		if ( item.id === item.name ) {
+			return [ bases.get( item.name ) ];
+		}
+
+		const base = bases.get( item.name );
+
+		if ( ! base ) {
+			return [ item ];
+		}
+
+		const prefix = `${ base.title } • `;
+		base.children.push( {
+			...item,
+			title: item.title.startsWith( prefix )
+				? item.title.slice( prefix.length )
+				: item.title,
+		} );
+
+		return [];
+	} );
+}
+
 function NavItem( { item, selected, onSelect, depth = 0 } ) {
 	const isActive = selected === item.id;
 
@@ -97,6 +136,8 @@ export default function Sidebar( {
 	onSelectPage,
 	onHome,
 	searchRef,
+	groupVariations,
+	setGroupVariations,
 } ) {
 	const lower = query.trim().toLowerCase();
 	const flat = useMemo( () => flatten( data.nav ), [ data.nav ] );
@@ -338,7 +379,10 @@ export default function Sidebar( {
 								</button>
 								{ isOpen && (
 									<ul>
-										{ category.items.map( ( item ) => (
+										{ ( groupVariations
+											? nestVariations( category.items )
+											: category.items
+										).map( ( item ) => (
 											<NavItem
 												key={ item.id }
 												item={ item }
@@ -353,14 +397,31 @@ export default function Sidebar( {
 					} ) }
 			</div>
 
-			{ data.urls.blockIndex && data.features.blockIndex && (
-				<footer className="vgtpk-sidebar__footer">
+			<footer className="vgtpk-sidebar__footer">
+				<label
+					className="vgtpk-sidebar__option"
+					htmlFor="vgtpk-group-variations"
+				>
+					<input
+						id="vgtpk-group-variations"
+						type="checkbox"
+						checked={ groupVariations }
+						onChange={ ( event ) =>
+							setGroupVariations( event.target.checked )
+						}
+					/>
+					{ __(
+						'Group variations under their block',
+						'viget-parts-kit'
+					) }
+				</label>
+				{ data.urls.blockIndex && data.features.blockIndex && (
 					<a href={ data.urls.blockIndex }>
 						<IndexIcon />
 						{ __( 'Block Index', 'viget-parts-kit' ) }
 					</a>
-				</footer>
-			) }
+				) }
+			</footer>
 		</nav>
 	);
 }

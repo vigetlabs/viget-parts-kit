@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-11T18:15:56+00:00\n"
+"POT-Creation-Date: 2026-11-11T18:32:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: viget-parts-kit\n"
@@ -45,7 +45,7 @@ msgstr ""
 
 #: includes/class-access.php:90
 #: includes/class-admin.php:127
-#: includes/class-canvas.php:161
+#: includes/class-canvas.php:163
 #: includes/class-post-type.php:80
 #: includes/class-post-type.php:82
 #: views/explorer.php:21
@@ -440,48 +440,48 @@ msgstr ""
 msgid "You don’t have access to the Block Index."
 msgstr ""
 
-#: includes/class-canvas.php:164
+#: includes/class-canvas.php:166
 msgid "Choose a block from the list to see it here."
 msgstr ""
 
-#: includes/class-canvas.php:229
-#: includes/class-canvas.php:260
+#: includes/class-canvas.php:233
+#: includes/class-canvas.php:264
 msgid "None"
 msgstr ""
 
-#: includes/class-canvas.php:233
+#: includes/class-canvas.php:237
 msgid "Padded group"
 msgstr ""
 
-#: includes/class-canvas.php:237
+#: includes/class-canvas.php:241
 msgid "Two columns"
 msgstr ""
 
-#: includes/class-canvas.php:241
+#: includes/class-canvas.php:245
 msgid "Three columns"
 msgstr ""
 
-#: includes/class-canvas.php:245
+#: includes/class-canvas.php:249
 msgid "Narrow sidebar"
 msgstr ""
 
-#: includes/class-catalog.php:366
+#: includes/class-catalog.php:367
 msgid "That block isn’t in the Parts Kit."
 msgstr ""
 
-#: includes/class-catalog.php:415
+#: includes/class-catalog.php:416
 msgid "Start a rebuild before sending blocks."
 msgstr ""
 
-#: includes/class-catalog.php:442
+#: includes/class-catalog.php:443
 msgid "No blocks were received, so the Parts Kit was left as it was."
 msgstr ""
 
-#: includes/class-catalog.php:525
+#: includes/class-catalog.php:526
 msgid "None of those blocks are in the Parts Kit. Rebuild it and try again."
 msgstr ""
 
-#: includes/class-catalog.php:533
+#: includes/class-catalog.php:534
 msgid "Kitchen Sink"
 msgstr ""
 
@@ -1663,6 +1663,10 @@ msgstr ""
 
 #: build/explorer.js:5
 msgid "Add a QA page"
+msgstr ""
+
+#: build/explorer.js:5
+msgid "Group variations under their block"
 msgstr ""
 
 #. translators: %d: number of blocks.

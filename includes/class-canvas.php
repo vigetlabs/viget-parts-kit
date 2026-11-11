@@ -112,6 +112,8 @@ class Canvas {
 
 		add_filter( 'body_class', [ $this, 'body_class' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ], 99 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'dequeue_plugin_scripts' ], PHP_INT_MAX );
+		$this->remove_plugin_output();
 
 		return VGTPK_PLUGIN_PATH . 'views/canvas.php';
 	}
@@ -208,6 +210,8 @@ class Canvas {
 		if ( $this->needs_post_context( $markup ) ) {
 			$this->setup_context_post();
 		}
+
+		add_filter( 'render_block', [ $this, 'render_empty_as_preview' ], 10, 3 );
 
 		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core filter, so samples render exactly as on a real page.
 		$this->content = (string) apply_filters( 'the_content', $markup );
@@ -323,6 +327,175 @@ class Canvas {
 		if ( $post instanceof WP_Post ) {
 			setup_postdata( $GLOBALS['post'] = $post ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found -- Context for post blocks.
 		}
+	}
+
+	/**
+	 * Render a dynamic block that came out empty again the way the editor would, so blocks that
+	 * only show sample content in the editor (an is_admin() or $is_preview check) still show something.
+	 *
+	 * @param string $content Rendered block.
+	 * @param array  $parsed  Parsed block.
+	 * @param mixed  $block   Block instance, a WP_Block.
+	 *
+	 * @return string
+	 */
+	public function render_empty_as_preview( string $content, array $parsed, mixed $block = null ): string {
+		static $rendering = false;
+
+		if ( $rendering || '' !== trim( $content ) || ! $block instanceof \WP_Block || ! $block->block_type?->is_dynamic() ) {
+			return $content;
+		}
+
+		$rendering = true;
+		$screen    = $GLOBALS['current_screen'] ?? null;
+
+		try {
+			$GLOBALS['current_screen'] = self::admin_screen(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Restored below.
+
+			$content = (string) $block->render();
+
+			if ( '' === trim( $content ) && str_starts_with( $block->name, 'acf/' ) && function_exists( 'acf_rendered_block' ) ) {
+				$inner = implode( '', array_map( static fn( $inner_block ) => $inner_block->render(), iterator_to_array( $block->inner_blocks ) ) );
+				$html  = (string) acf_rendered_block( array_merge( $block->attributes, [ 'name' => $block->name ] ), $inner, true, (int) get_the_ID(), $block );
+
+				$content = function_exists( 'acf_replace_inner_blocks_in_block_content' ) ? (string) acf_replace_inner_blocks_in_block_content( $inner, $html ) : $html;
+			}
+		} catch ( \Throwable $error ) {
+			$content = '';
+		} finally {
+			$GLOBALS['current_screen'] = $screen; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Restoring.
+			$rendering                 = false;
+		}
+
+		return $content;
+	}
+
+	/**
+	 * A front-end stand-in for an admin screen, so is_admin() is true while it's current.
+	 *
+	 * @return object
+	 */
+	private static function admin_screen(): object {
+		if ( ! class_exists( 'WP_Screen' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-screen.php';
+		}
+
+		return \WP_Screen::get( 'vgtpk-canvas' );
+	}
+
+	/**
+	 * Keep plugins from adding things like cookie banners, chat widgets and analytics to the canvas.
+	 * Removes plugin callbacks from wp_head, wp_body_open and wp_footer. Core, the theme and block assets stay.
+	 *
+	 * @return void
+	 */
+	private function remove_plugin_output(): void {
+		global $wp_filter;
+
+		foreach ( [ 'wp_head', 'wp_body_open', 'wp_footer' ] as $hook ) {
+			if ( empty( $wp_filter[ $hook ] ) ) {
+				continue;
+			}
+
+			foreach ( $wp_filter[ $hook ]->callbacks as $priority => $callbacks ) {
+				foreach ( $callbacks as $callback ) {
+					if ( self::is_plugin_callback( $callback['function'], $hook ) ) {
+						remove_action( $hook, $callback['function'], $priority );
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Dequeue plugin scripts that no registered block uses.
+	 *
+	 * @return void
+	 */
+	public function dequeue_plugin_scripts(): void {
+		$scripts = wp_scripts();
+		$keep    = [];
+
+		foreach ( \WP_Block_Type_Registry::get_instance()->get_all_registered() as $type ) {
+			$keep = array_merge( $keep, (array) $type->script_handles, (array) $type->view_script_handles );
+		}
+
+		foreach ( $scripts->queue as $handle ) {
+			$src = (string) ( $scripts->registered[ $handle ]->src ?? '' );
+
+			if ( \in_array( $handle, $keep, true ) || ! self::is_plugin_url( $src ) ) {
+				continue;
+			}
+
+			/**
+			 * Filters whether a plugin script stays on the canvas.
+			 *
+			 * @param bool   $keep   Whether to keep it. Defaults to false.
+			 * @param string $handle Script handle.
+			 */
+			if ( ! apply_filters( 'vgtpk_canvas_keep_script', false, $handle ) ) {
+				wp_dequeue_script( $handle );
+			}
+		}
+	}
+
+	/**
+	 * Whether a URL points into the plugins or mu-plugins folder, other than this plugin.
+	 *
+	 * @param string $url URL.
+	 *
+	 * @return bool
+	 */
+	private static function is_plugin_url( string $url ): bool {
+		if ( '' === $url || str_starts_with( $url, VGTPK_PLUGIN_URL ) ) {
+			return false;
+		}
+
+		return str_starts_with( $url, WP_PLUGIN_URL ) || str_starts_with( $url, WPMU_PLUGIN_URL );
+	}
+
+	/**
+	 * Whether a hook callback is defined in another plugin or an mu-plugin.
+	 *
+	 * @param mixed  $callback Callback.
+	 * @param string $hook     Hook name.
+	 *
+	 * @return bool
+	 */
+	private static function is_plugin_callback( mixed $callback, string $hook ): bool {
+		try {
+			if ( \is_string( $callback ) && str_contains( $callback, '::' ) ) {
+				$callback = explode( '::', $callback, 2 );
+			}
+
+			if ( \is_array( $callback ) ) {
+				$reflection = new \ReflectionMethod( $callback[0], $callback[1] );
+			} elseif ( \is_object( $callback ) && ! $callback instanceof \Closure ) {
+				$reflection = new \ReflectionMethod( $callback, '__invoke' );
+			} else {
+				$reflection = new \ReflectionFunction( $callback );
+			}
+		} catch ( \ReflectionException $error ) {
+			return false;
+		}
+
+		$file = wp_normalize_path( (string) $reflection->getFileName() );
+
+		if ( '' === $file || str_starts_with( $file, wp_normalize_path( VGTPK_PLUGIN_PATH ) ) ) {
+			return false;
+		}
+
+		$is_plugin = str_starts_with( $file, wp_normalize_path( WP_PLUGIN_DIR ) . '/' ) || str_starts_with( $file, wp_normalize_path( WPMU_PLUGIN_DIR ) . '/' );
+
+		/**
+		 * Filters whether a plugin's wp_head, wp_body_open or wp_footer callback is removed from the canvas.
+		 *
+		 * @param bool   $remove   Whether to remove it. True for anything defined in a plugin or mu-plugin.
+		 * @param mixed  $callback Callback.
+		 * @param string $hook     Hook name.
+		 * @param string $file     File the callback is defined in.
+		 */
+		return (bool) apply_filters( 'vgtpk_canvas_remove_callback', $is_plugin, $callback, $hook, $file );
 	}
 
 	/**

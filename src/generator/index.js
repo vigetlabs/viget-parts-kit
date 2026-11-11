@@ -717,8 +717,10 @@ function iconMarkup( icon ) {
 		const src = icon?.src || icon;
 
 		// Dashicon slugs are drawn with the Dashicons font, not as SVG.
-		if ( typeof src === 'string' && ! src.trim().startsWith( '<' ) ) {
-			return `dashicon:${ src.replace( /^dashicons-/, '' ) }`;
+		if ( typeof src === 'string' ) {
+			return src.trim().startsWith( '<' )
+				? src
+				: `dashicon:${ src.replace( /^dashicons-/, '' ) }`;
 		}
 
 		return src

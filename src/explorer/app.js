@@ -36,6 +36,7 @@ const CORE_CATEGORIES = [
 	'reusable',
 ];
 const AUTO_REBUILD_KEY = 'vgtpk-auto-rebuild';
+const GROUP_KEY = 'vgtpk-group-variations';
 const REBUILD_TIMEOUT = 60000;
 
 const readCollapsed = ( nav ) => {
@@ -72,6 +73,13 @@ export default function App( { data } ) {
 	const [ collapsed, setCollapsed ] = useState( () =>
 		readCollapsed( data.nav )
 	);
+	const [ groupVariations, setGroupVariationsState ] = useState( () => {
+		try {
+			return window.localStorage.getItem( GROUP_KEY ) === '1';
+		} catch {
+			return false;
+		}
+	} );
 	const [ infoOpen, setInfoOpen ] = useState( false );
 	const [ menuOpen, setMenuOpen ] = useState( false );
 	const [ focused, setFocused ] = useState( '' );
@@ -195,6 +203,13 @@ export default function App( { data } ) {
 	};
 
 	// Saved only when someone toggles, so the defaults keep up with new categories until then.
+	const setGroupVariations = ( value ) => {
+		setGroupVariationsState( value );
+		try {
+			window.localStorage.setItem( GROUP_KEY, value ? '1' : '0' );
+		} catch {}
+	};
+
 	const toggleCategory = ( slug ) =>
 		setCollapsed( ( prev ) => {
 			const next = prev.includes( slug )
@@ -401,6 +416,8 @@ export default function App( { data } ) {
 				onSelectPage={ selectPage }
 				onHome={ goHome }
 				searchRef={ searchRef }
+				groupVariations={ groupVariations }
+				setGroupVariations={ setGroupVariations }
 			/>
 
 			<button

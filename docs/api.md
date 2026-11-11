@@ -140,6 +140,8 @@ add_filter( 'vgtpk_contexts', function ( array $contexts ): array {
 | --- | --- | --- |
 | `vgtpk_sample_markup` | `string $markup, array $sample, array $item` | Change a sample's block markup right before it renders. |
 | `vgtpk_context_post` | `WP_Post|null $post` | The post that post blocks (Post Title, Query Loop) read from. Defaults to the latest post. |
+| `vgtpk_canvas_remove_callback` | `bool $remove, callable $callback, string $hook, string $file` | Plugin callbacks on `wp_head`, `wp_body_open` and `wp_footer` are removed from the canvas, so cookie banners and chat widgets stay out. Return false to keep one. |
+| `vgtpk_canvas_keep_script` | `bool $keep, string $handle` | Plugin scripts no block uses are dequeued from the canvas. Return true to keep one. |
 
 ### Block Index
 
@@ -186,3 +188,5 @@ All under `/wp-json/vgtpk/v1/`.
 The catalog can't be built in PHP alone: static blocks like Paragraph and Button save their HTML from JavaScript. So a rebuild opens `post-new.php?post_type=vgtpk_part&vgtpk_generate=1`, where every block, style and variation is registered exactly as authors see them. The generator script walks the inserter, builds samples with `createBlock()` and `serialize()`, and uploads them in batches. The explorer runs this in a hidden iframe whenever the fingerprint from `vgtpk_catalog_hash_parts` changes, so it rebuilds itself after a deploy.
 
 Samples render server-side through `the_content`, inside the theme's own `wp_head()` and global styles, so what you see is what the frontend produces.
+
+A dynamic block that renders nothing in the canvas is rendered again with `is_admin()` true, and ACF blocks with `$is_preview` true, so blocks that only show sample content in the editor still show it here.

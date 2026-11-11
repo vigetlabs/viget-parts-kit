@@ -232,7 +232,8 @@ class Catalog {
 
 		$parts = [
 			'schema'   => self::SCHEMA,
-			'plugin'   => VGTPK_VERSION,
+			// The generator's build hash, so a plugin update that changes samples triggers a rebuild.
+			'plugin'   => VGTPK_VERSION . '+' . Canvas::asset( 'generator' )['version'],
 			'wp'       => $wp_version,
 			'theme'    => $theme->get_stylesheet() . '@' . $theme->get( 'Version' ),
 			'plugins'  => array_merge( (array) get_option( 'active_plugins', [] ), array_keys( (array) get_site_option( 'active_sitewide_plugins', [] ) ) ),
@@ -635,6 +636,9 @@ class Catalog {
 		if ( ! str_contains( $svg, '<svg' ) ) {
 			return '';
 		}
+
+		// Drop non-drawing elements with their contents. wp_kses() would keep the children, like a clipPath's white rect.
+		$svg = (string) preg_replace( '#<(defs|clipPath|mask|style|title|desc|metadata|script)\b[^>]*?(?:/>|>.*?</\1\s*>)#is', '', $svg );
 
 		$shape   = [
 			'd'               => true,
