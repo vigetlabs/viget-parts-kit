@@ -1,18 +1,18 @@
 {
   "name": "viget/viget-parts-kit",
-  "description": "Component Parts Kit integration for WordPress made by Viget.",
+  "description": "A browsable, theme-styled kit of every registered block, plus a Block Index showing where each block is used.",
   "keywords": [
     "wordpress",
-    "components",
-    "index",
-    "gutenberg",
     "blocks",
-    "editor",
-    "directory"
+    "gutenberg",
+    "parts-kit",
+    "pattern-library",
+    "qa",
+    "block-index"
   ],
   "type": "wordpress-plugin",
   "homepage": "https://github.com/vigetlabs/viget-parts-kit",
-  "license": "MIT",
+  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "Viget",
@@ -20,12 +20,15 @@
     }
   ],
   "require": {
-    "composer/installers": "*"
+    "composer/installers": "^1.0 || ^2.0"
   },
   "config": {
     "sort-packages": true,
     "allow-plugins": {
       "composer/installers": true
+    },
+    "platform": {
+      "php": "8.2"
     }
   }
 }

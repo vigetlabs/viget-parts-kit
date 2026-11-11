@@ -1,0 +1,98 @@
+@use "../shared/tokens" as *;
+
+.vgtpk-generator {
+	align-items: center;
+	background: $base;
+	color: $on-base;
+	display: flex;
+	font-family: $font;
+	inset: 0;
+	justify-content: center;
+	position: fixed;
+	z-index: 1000000;
+
+	&__panel {
+		max-width: 32rem;
+		padding: 2rem;
+		width: 100%;
+	}
+
+	&__site {
+		color: on-base(60%);
+		font-size: 0.875rem;
+		margin: 0 0 0.5rem;
+	}
+
+	&__title {
+		color: $on-base;
+		font-size: 2rem;
+		font-weight: 600;
+		letter-spacing: -0.01em;
+		line-height: 1.15;
+		margin: 0 0 1.5rem;
+	}
+
+	&__bar {
+		background: on-base(12%);
+		border-radius: 2px;
+		height: 4px;
+		overflow: hidden;
+
+		span {
+			background: $accent;
+			display: block;
+			height: 100%;
+			transition: width 0.2s ease-out;
+			width: 0;
+		}
+	}
+
+	&__detail {
+		color: on-base(75%);
+		font-size: 0.9375rem;
+		font-variant-numeric: tabular-nums;
+		margin: 1rem 0 0;
+		min-height: 1.5em;
+	}
+
+	&__actions {
+		display: flex;
+		gap: 1rem;
+		margin-top: 1.5rem;
+
+		button,
+		a {
+			background: $on-base;
+			border: 0;
+			border-radius: 4px;
+			color: $base;
+			cursor: pointer;
+			font: inherit;
+			font-weight: 600;
+			padding: 0.625rem 1rem;
+			text-decoration: none;
+		}
+
+		a {
+			background: transparent;
+			color: $on-base;
+			text-decoration: underline;
+		}
+
+		:focus-visible {
+			outline: 2px solid $accent;
+			outline-offset: 2px;
+		}
+	}
+
+	&.is-error &__bar span {
+		background: $error;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+
+		&__bar span {
+			transition: none;
+		}
+	}
+}
