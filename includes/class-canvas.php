@@ -376,11 +376,16 @@ class Canvas {
 	 * @return object
 	 */
 	private static function admin_screen(): object {
-		if ( ! class_exists( 'WP_Screen' ) ) {
+		static $screen = null;
+
+		if ( null === $screen ) {
 			require_once ABSPATH . 'wp-admin/includes/class-wp-screen.php';
+			require_once ABSPATH . 'wp-admin/includes/screen.php';
+
+			$screen = \WP_Screen::get( 'vgtpk-canvas' );
 		}
 
-		return \WP_Screen::get( 'vgtpk-canvas' );
+		return $screen;
 	}
 
 	/**
